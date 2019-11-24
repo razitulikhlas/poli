@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Jadwal_model extends MY_Model {
     public function __construct(){
         $table = 'tbl_jadwal';
-        parent::__construct($table);
+        $detail = '';
+        parent::__construct($table,$detail);
     }
 
     public function getDetail(){

@@ -3,10 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Model extends CI_Model {
     protected $table;
-    protected $tablejoin;
+    protected $detail;
     
-    public function __construct($table){
-        $this->table     = $table;
+    public function __construct($table,$detail){
+        $this->table      = $table;
+        $this->detail     = $detail;
     }
 
     //fungsi untuk memasukan data kedalam tabel
@@ -59,11 +60,22 @@ class MY_Model extends CI_Model {
     }
 
     //fungsi untuk ambil subharga
-    public function subHarga($sum,$join,$where,$tablejoin){
+    public function subHarga($sum,$join,$where){
          $this->db->select_sum($sum);
          $this->db->from($this->table);
-         $this->db->join($tablejoin,$join);
+         $this->db->join($this->detail,$join);
          $this->db->where('no_faktur',$where);
-         return $this->db->get()->row();
+        //  return $this->db->get_compiled_select();
+        return $this->db->get()->row();
+    }
+
+
+    public function getRincian($select,$join,$where){
+        $this->db->select($select);
+        $this->db->from($this->table);
+        $this->db->join($this->detail,$join);
+        $this->db->where('no_faktur',$where);
+        // return $this->db->get_compiled_select();
+        return $this->db->get()->result();
     }
 }

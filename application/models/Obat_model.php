@@ -3,8 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Obat_model extends MY_Model {
     public function __construct(){
-        $table = 'tbl_obat';
-        parent::__construct($table);
+        $table  = 'tbl_obat';
+        $detail = 'detail_obat';
+        parent::__construct($table,$detail);
+    }
+
+    public function saveRincian($table,$data){
+        $this->db->insert($table,$data);
+        return $this->db->affected_rows();
+    }
+
+    public function getRincianObat($query){
+        return $this->db->query($query);
+    }
+
+
+
+    public function subHargas($nofaktur){
+        $this->db->select_sum('sub_total');
+        $this->db->from('detail_obat');
+        $this->db->where('no_faktur',$nofaktur);
+        return $this->db->get();
+        
     }
 }
 
@@ -39,20 +59,5 @@ class Obat_model extends MY_Model {
 //     	$this->db->update($table,$data);
 //     }
 
-//     public function getRincianObat($query){
-//         return $this->db->query($query);
-//     }
 
-//     public function saveRincianObat($data){
-//         $this->db->insert('detail_obat',$data);
-//         return $this->db->affected_rows();
-//     }
-
-//     public function subHarga($nofaktur){
-//         $this->db->select_sum('sub_total');
-//         $this->db->from('detail_obat');
-//         $this->db->where('no_faktur',$nofaktur);
-//         return $this->db->get();
-        
-//     }
 // }
