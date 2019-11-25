@@ -1,4 +1,4 @@
- <?php
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pendaftaran extends CI_Controller {
@@ -7,29 +7,26 @@ class Pendaftaran extends CI_Controller {
 
 	public function index()
 	{
-		$data['spesialis'] = $this->spesialis_model->get_data();
+		$data['spesialis'] = $this->spesialis_model->getAll();
 		$this->load->model('pendaftaran_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
 		$this->load->view('pendaftaran/v_views',$data);
 		$this->load->view('templates/footer');
+
 	}
 
 	public function tambah($no){
 
-		$tgl   = date('Y-m-d');
 		$query = "SELECT tbl_dokter.nama as 'namadokter',kd_jadwal,waktu,tanggal,status,photo
 				  FROM tbl_dokter,tbl_jadwal
-				  WHERE tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && 
-				  kd_poli= '$no' &&
-				  tbl_jadwal.tanggal like '$tgl%' ";
+				  WHERE tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && kd_poli= '$no' ";
+		
 		$data = [
-					'jadwal'  => $this->jadwal_model->getDetail($query),
+					'jadwal'  => $this->jadwal_model->get_data($query),
 					'kd_poli' => $no	
 				];
-		
-
-		$this->load->model('pendaftaran_model');
+		$this->load->model('dokter_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
 		$this->load->view('pendaftaran/v_view',$data);
@@ -39,12 +36,11 @@ class Pendaftaran extends CI_Controller {
 
 	public function getFaktur(){
 
-		$kd_poli   = $this->input->post('kd_poli');
-		// $kd_jadwal = $this->input->post('kd_jadwal');
+		$kd_poli  = $this->input->post('kd_poli'); 
 		$today    = date('ymd');
 		$nopendaf = $today.''.$kd_poli;
 
-		$query   = "select max(no_pendaftaran) as last from tbl_pendaftaran where no_pendaftaran like '$nopendaf%' ";
+		$query   = "select max(no_pendaftaran) as last from tbl_pendaftaran where no_pendaftaran like '$nopendaf%'";
 
 		$data =$this->pendaftaran_model->get_faktur($query)->result_array();
 
@@ -70,13 +66,16 @@ class Pendaftaran extends CI_Controller {
 		$nopendaftaran 	= $this->input->post('nopendaftaran');	
 		$kd_pasien		= $this->input->post('kd_pasien');
 		$kd_poli 		= $this->input->post('kd_poli');
+		$keterangan  	= $this->input->post('keterangan');
 		$pelayan	 	= '';
 
 			$data = array(
 			'no_pendaftaran'=> $nopendaftaran,
 			'kd_pasien'	    => $kd_pasien,
 			'kd_poli'	    => $kd_poli,
-			'kd_jadwal'	    => $kd_jadwal
+			'kd_jadwal'	    => $kd_jadwal,
+			'keterangan'    => $keterangan,
+			'nama_pelayan'  => $pelayan
 		);
 
 		$this->pendaftaran_model->input_data($data,'tbl_pendaftaran');
@@ -86,7 +85,6 @@ class Pendaftaran extends CI_Controller {
 
 	public function getDataPasien(){
 		$kd_poli = $this->input->post('kd_poli');
-		$tgl 	 = date('Y-m-d');
 		
 		$query   = "
 					SELECT pasien.nama AS 'namapasien', tbl_dokter.nama AS 'namadokter',
@@ -95,32 +93,25 @@ class Pendaftaran extends CI_Controller {
 					WHERE tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && 
 					tbl_jadwal.kd_jadwal = tbl_pendaftaran.kd_jadwal && 
 					tbl_pendaftaran.kd_pasien = pasien.kd_pasien &&
-					tbl_pendaftaran.kd_poli = '$kd_poli' &&
-                    tbl_pendaftaran.created_at like '$tgl%'
+					tbl_pendaftaran.kd_poli = '$kd_poli'
 					";
 
 		$querypasien = "
 						SELECT count(no_pendaftaran) AS 'jumlah' FROM 	tbl_pendaftaran 
-						WHERE kd_poli = '$kd_poli' &&
-                    tbl_pendaftaran.created_at like '$tgl%'
+						WHERE kd_poli = '$kd_poli'
 
 					";
 
 		$querydokter = "
 						SELECT count(kd_poli) AS 'jumlah' FROM 	tbl_jadwal 
-						WHERE kd_poli = '$kd_poli' && tbl_jadwal.tanggal = '$tgl' 
-
-					";
-		$riwayat = "
-						SELECT count(no_pendaftaran) AS 'jumlah' FROM 	tbl_pendaftaran 
 						WHERE kd_poli = '$kd_poli'
+
 					";
 		$data  = [ 
 
-					"pasien"  => $this->pendaftaran_model->getDataPasien($query),
-					"total"   => $this->pendaftaran_model->getDataPasien($querypasien),
-					"dokter"  => $this->pendaftaran_model->getDataPasien($querydokter),
-					"riwayat" => $this->pendaftaran_model->getDataPasien($riwayat)
+					"pasien" => $this->pendaftaran_model->getDataPasien($query),
+					"total"  => $this->pendaftaran_model->getDataPasien($querypasien),
+					"dokter" => $this->pendaftaran_model->getDataPasien($querydokter)
 				];
 
 		echo json_encode($data);
@@ -131,6 +122,7 @@ class Pendaftaran extends CI_Controller {
 		$this->pendaftaran_model->hapus_data($where,'tbl_pendaftaran');
 		redirect('pendaftaran/index');
 	}
+
 
 	// public function getTotal(){
 	// 	$kd_poli = $this->input->post('kd_poli');

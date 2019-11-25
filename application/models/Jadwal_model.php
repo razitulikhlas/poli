@@ -22,6 +22,9 @@ class Jadwal_model extends MY_Model {
         $this->db->join('tbl_dokter','tbl_dokter.kd_dokter=tbl_jadwal.kd_dokter');
         $this->db->where('kd_jadwal',$kd_jadwal);
         return $this->db->get()->row();
+    }
 
+    public function get_data($query){
+        return $this->db->query($query)->result_array();
     }
 }

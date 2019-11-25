@@ -99,7 +99,7 @@
                     </div>
                     <div class="col-sm-2">
                       <div class="form-group" style="margin-top: 32px;">
-                        <button class="btn btn-primary" id="btnobat" style="width: 50%">tambah</button>
+                        <button class="btn btn-primary" onclick="save(1)" style="width: 50%">tambah</button>
                       </div>
                     </div>
 
@@ -132,7 +132,7 @@
                     
                     <div class="col-sm-2">
                       <div class="form-group" style="margin-top: 32px;">
-                        <button class="btn btn-primary" id="btntindakan" style="width: 50%" onclick="saveTindakan()">tambah</button>
+                        <button class="btn btn-primary" onclick="save(2)" style="width: 50%" >tambah</button>
                       </div>
                     </div>
 
@@ -165,7 +165,7 @@
                     
                     <div class="col-sm-2">
                       <div class="form-group" style="margin-top: 32px;">
-                        <button class="btn btn-primary" id="btnlab" style="width: 50%">tambah</button>
+                        <button class="btn btn-primary" onclick="save(3)" style="width: 50%">tambah</button>
                       </div>
                     </div>
 
@@ -196,7 +196,7 @@
                     <!-- </rincian obat> -->
                      <tr>
                       <td>Sub Harga</td>
-                      <td id="detailsubhargaobat">Rp. </td>
+                      <td id="detailsubhargaobat">0</td>
                     </tr>
                     <!-- </sub harga obat> -->
                     <tr id="rinciantindakan">
@@ -206,7 +206,7 @@
                     <!-- </rincian tindakan> -->
                      <tr>
                       <td>Sub Harga</td>
-                      <td id="detailsubhargatindakan">RP. 0</td>
+                      <td id="detailsubhargatindakan">0</td>
                     </tr>
                     <!-- </sub Harga tindakan> -->
                     <tr id="rincianlabor">
@@ -217,7 +217,7 @@
                      <!-- </rincian labor> -->
                     <tr>
                       <td>Sub Harga</td>
-                      <td id="detailsubhargalabor">RP. 70000</td>
+                      <td id="detailsubhargalabor">0</td>
                     </tr>
                     <!-- </sub Harga Labor> -->
 
@@ -289,7 +289,7 @@
                           
                         </div>
                         <div class="col-md-2 pull-right">
-                          <button class="form-control btn btn-danger" id="btnBayar">Bayar</button>
+                          <button class="form-control btn btn-success" onclick="bayar()">Bayar</button>
                         </div>
                     </div>
 
@@ -305,158 +305,248 @@
 
 
   <script> 
-    function save(){
-      let kd_obat   = $("[name='kd_obat']").val();
-      let subharga  = $("[name='subhargaobat']").val();
-      let jumlah    = $("[name='jumlahobat']").val();
+
+    function bayar(){
+      let txtTotal  = $('#txtTotal').val();
+      let dibayar   = $('#dibayar').val();
+      let kembalian = $('#kembalian').val();
       let faktur    = $('#nofaktur').val();
-      let kd_rincian= 'obat';
+
       $.ajax({
-        type     : 'POST',
-        data     :  'kd_obat='+kd_obat+
-                    '&subharga='+subharga+
-                    '&kd_rincian=1'+
-                    '&jumlah='+jumlah+
-                    '&faktur='+faktur,
-        url      : '<?= base_url()."listpasien/saveRincian"?>',
-        dataType : 'json',
-        success  : function(hasil){
-          console.log(hasil);
-          if(hasil == 'succes'){
-          $('#jumlahobat').val('');
-          $('#subhargaobat').val('');
-          $('tr').remove('#listobat');
-          getRincianObat();
-        }  
-      }
-    });
+            type     : 'POST',
+            data     :  'total='+txtTotal+
+                        '&dibayar='+dibayar+
+                        '&kembalian='+kembalian+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/pembayaran"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              if(hasil == 'succes'){
+                location.href = '<?= base_url()."resep/index" ?>';
+              }
+              
+          }
+        });
+    }
+
+    function save($rincian_kode){
+      if($rincian_kode == 1){
+          let kd_obat   = $("[name='kd_obat']").val();
+          let subharga  = $("[name='subhargaobat']").val();
+          let jumlah    = $("[name='jumlahobat']").val();
+          let faktur    = $('#nofaktur').val();
+          $.ajax({
+            type     : 'POST',
+            data     :  'kd_obat='+kd_obat+
+                        '&subharga='+subharga+
+                        '&kd_rincian='+$rincian_kode+
+                        '&jumlah='+jumlah+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/saveRincian"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              console.log(hasil);
+              if(hasil == 'succes'){
+              $('#jumlahobat').val('');
+              $('#subhargaobat').val('');
+              $('tr').remove('#listobat');
+              getRincian($rincian_kode);
+            }  
+          }
+        });
+      }else if($rincian_kode == 2){
+          let kd_tindakan   = $("[name='kd_tindakan']").val();
+          let kd_krywntdkn  = $("[name='karyawan_tindakan']").val();
+          let faktur        = $('#nofaktur').val();
+          $.ajax({
+            type     : 'POST',
+            data     :  'kd_tindakan='+kd_tindakan+
+                        '&kd_rincian='+$rincian_kode+
+                        '&kd_karyawan='+kd_krywntdkn+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/saveRincian"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              console.log(hasil);
+              if(hasil == 'succes'){
+                $('tr').remove('#listindakan');
+                getRincian($rincian_kode);
+            }  
+          }
+        });
+      }else{
+         let kd_tindakan    = $("[name='kd_lab']").val();
+          let kd_krywnlab   = $("[name='karyawan_lab']").val();
+          let faktur        = $('#nofaktur').val();
+          $.ajax({
+            type     : 'POST',
+            data     :  'kd_labor='+kd_tindakan+
+                        '&kd_rincian='+$rincian_kode+
+                        '&kd_karyawan='+kd_krywnlab+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/saveRincian"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              if(hasil == 'succes'){ 
+              $('tr').remove('#listlab');
+              getRincian($rincian_kode);
+            }  
+          }
+        });
+      }  
   }
 
-  function saveTindakan(){
-      let kd_tindakan   = $("[name='kd_tindakan']").val();
-      let kd_krywntdkn  = $("[name='karyawan_tindakan']").val();
-      let faktur        = $('#nofaktur').val();
-      $.ajax({
-        type     : 'POST',
-        data     :  'kd_tindakan='+kd_tindakan+
-                    '&kd_rincian=2'+
-                    '&kd_karyawan='+kd_krywntdkn+
-                    '&faktur='+faktur,
-        url      : '<?= base_url()."listpasien/saveRincian"?>',
-        dataType : 'json',
-        success  : function(hasil){
-          console.log(hasil);
-          if(hasil == 'succes'){
-            $('tr').remove('#listindakan');
-            getRincianTindakan();
-        }  
-      }
-    });
-  }
-
-  function saveLab(){
-      let kd_tindakan   = $("[name='kd_lab']").val();
-      let kd_krywnlab   = $("[name='karyawan_lab']").val();
-      let faktur        = $('#nofaktur').val();
-      $.ajax({
-        type     : 'POST',
-        data     :  'kd_labor='+kd_tindakan+
-                    '&kd_rincian=3'+
-                    '&kd_karyawan='+kd_krywnlab+
-                    '&faktur='+faktur,
-        url      : '<?= base_url()."listpasien/saveRincian"?>',
-        dataType : 'json',
-        success  : function(hasil){
-          if(hasil == 'succes'){ 
-          $('tr').remove('#listlab');
-          getRincianLab();
-        }  
-      }
-    });
-  }
+  
 
 
-  function getRincianTindakan(){
+  function getRincian($kd_rincian){
     let faktur = $('#nofaktur').val();
+    if($kd_rincian == 1){
       $.ajax({
         type     : 'POST',
         data     : 'faktur='+faktur+
-                   '&kd_rincian=2',
+                   '&kd_rincian='+$kd_rincian,
+        url      : '<?= base_url()."listpasien/getRincian"?>',
+        dataType : 'json',
+        success  : function(data){
+            console.log(data);
+            var baris='';
+            var no=1;
+            if(data.rincian.length > 0){
+                for(var i=0;i<data.rincian.length;i++){
+                baris += `<tr id="listobat">
+                        <td style="color:#808080">`+data.rincian[i].nama_obat+`</td>
+                        <td style="color:#808080">
+                        <button class='btn btn-danger btn-xs' onclick="hapusObat('`+data.rincian[i].no+`')"><i class="fa fa-trash "></i></button>
+                        RP.`+data.rincian[i].sub_total+`</td>
+                        </tr>`;
+                    no++;
+              }
+              $('#detailsubhargaobat').text(data.subharga.sub_total);
+              $('#rincianobat').after(baris);
+              totalHarga();
+            }else{
+              $('tr').remove('#listobat');
+              $('#detailsubhargaobat').text("0");
+              totalHarga();
+            }    
+        }
+      });
+    }else if($kd_rincian == 2){
+      $.ajax({
+        type     : 'POST',
+        data     : 'faktur='+faktur+
+                   '&kd_rincian='+$kd_rincian,
         url      : '<?= base_url()."listpasien/getRincian"?>',
         dataType : 'json',
         success  : function(data){
           console.log(data);
             var baris='';
             var no=1;
-            for(var i=0;i<data.rincian.length;i++){
+            if(data.rincian.length > 0){
+              for(var i=0;i<data.rincian.length;i++){
               baris += `<tr id="listindakan">
                       <td style="color:#808080">`+data.rincian[i].tindakan+`</td>
                       <td style="color:#808080">
-                      <a href="<?= base_url()?>labor/hapusData/`+data.rincian[i].no+`" class="btn btn-danger btn-xs tombol-hapus"><i class="fa fa-trash"></i></a>
+                      <button class='btn btn-danger btn-xs' onclick="hapusTindakan('`+data.rincian[i].no+`')"><i class="fa fa-trash "></i></button>
                       RP.`+data.rincian[i].harga+`
                       </td>
                       </tr>`;
                   no++;
-            }
-            $('#rinciantindakan').after(baris);
-            $('#detailsubhargatindakan').text("Rp ."+data.subharga.harga);
+              }
+              $('#rinciantindakan').after(baris);
+              $('#detailsubhargatindakan').text(data.subharga.harga);
+              totalHarga();
+            }else{
+              $('tr').remove('#listtindakan');
+              $('#detailsubhargatindakan').text("0");
+              totalHarga();
+            }   
         }
       });
+    }else{
+      $.ajax({
+        type     : 'POST',
+        data     : 'faktur='+faktur+
+                   '&kd_rincian='+$kd_rincian,
+        url      : '<?= base_url()."listpasien/getRincian"?>',
+        dataType : 'json',
+        success  : function(data){
+            console.log(data);
+            var baris='';
+            var no=1;
+            if(data.rincian.length > 0){
+                  for(var i=0;i<data.rincian.length;i++){
+                  baris += `<tr id="listlab">
+                          <td style="color:#808080">`+data.rincian[i].tindakan+`</td>
+                          <td style="color:#808080">
+                          <button class='btn btn-danger btn-xs' onclick="hapusLab('`+data.rincian[i].no+`')"><i class="fa fa-trash "></i></button>
+                          RP.`+data.rincian[i].harga+`</td>
+                          </tr>`;
+                      no++;
+                }
+                $('#rincianlabor').after(baris);
+                $('#detailsubhargalabor').text(data.subharga.harga);
+                totalHarga();
+            }else{
+              $('tr').remove('#listlab');
+              $('#detailsubhargatindakan').text("0");
+              totalHarga();
+            } 
+        }
+      });
+    }
+      
   }
 
-  function getRincianObat(){
-      let faktur = $('#nofaktur').val();
-      $.ajax({
-        type     : 'POST',
-        data     : 'faktur='+faktur+
-                   '&kd_rincian=1',
-        url      : '<?= base_url()."listpasien/getRincian"?>',
-        dataType : 'json',
-        success  : function(data){
-            console.log(data);
-            var baris='';
-            var no=1;
-            for(var i=0;i<data.rincian.length;i++){
-              baris += `<tr id="listobat">
-                      <td style="color:#808080">`+data.rincian[i].nama_obat+`</td>
-                      <td style="color:#808080">
-                      <a href="<?= base_url()?>labor/hapusData/`+data.rincian[i].no+`" class="btn btn-danger btn-xs tombol-hapus"><i class="fa fa-trash"></i></a>
-                       RP.`+data.rincian[i].sub_total+`</td>
-                      </tr>`;
-                  no++;
-            }
-            $('#rincianobat').after(baris);
-            $('#detailsubhargaobat').text("Rp ."+data.subharga.sub_total);
+  function hapusObat(kd){
+    $.ajax({
+      type     : 'POST',
+      data     : 'id='+kd+
+                 '&jenis=1',
+      url      : '<?= base_url()."listpasien/hapusRincian" ?>',
+      dataType : 'json',
+      success  : function(data){
+        if(data == 'success'){
+          $('tr').remove('#listobat');
+          getRincian(1);
         }
-      });
-    }
+      }
+    })  
+  }
 
-    function getRincianLab(){
-      let faktur = $('#nofaktur').val();
-      $.ajax({
-        type     : 'POST',
-        data     : 'faktur='+faktur+
-                   '&kd_rincian=3',
-        url      : '<?= base_url()."listpasien/getRincian"?>',
-        dataType : 'json',
-        success  : function(data){
-            console.log(data);
-            var baris='';
-            var no=1;
-            for(var i=0;i<data.rincian.length;i++){
-              baris += `<tr id="listlab">
-                      <td style="color:#808080">`+data.rincian[i].tindakan+`</td>
-                      <td style="color:#808080">
-                      <a href="<?= base_url()?>labor/hapusData/`+data.rincian[i].no+`" class="btn btn-danger btn-xs tombol-hapus"><i class="fa fa-trash"></i></a>
-                       RP.`+data.rincian[i].harga+`</td>
-                      </tr>`;
-                  no++;
-            }
-            $('#rincianlabor').after(baris);
-            $('#detailsubhargalabor').text("Rp ."+data.subharga.harga);
+  function hapusTindakan(kd){
+    $.ajax({
+      type     : 'POST',
+      data     : 'id='+kd+
+                 '&jenis=2',
+      url      : '<?= base_url()."listpasien/hapusRincian" ?>',
+      dataType : 'json',
+      success  : function(data){
+        if(data == 'success'){
+          $('tr').remove('#listindakan');
+          getRincian(2);
         }
-      });
-    }
+      }
+    })  
+  }
+
+  function hapusLab(kd){
+    $.ajax({
+      type     : 'POST',
+      data     : 'id='+kd+
+                 '&jenis=3',
+      url      : '<?= base_url()."listpasien/hapusRincian" ?>',
+      dataType : 'json',
+      success  : function(data){
+        if(data == 'success'){
+          $('tr').remove('#listlab');
+          getRincian(3);
+        }
+      }
+    })  
+  }
+
 
   function getHargaLab(){
     let kd_lab = $('#lab').val();
@@ -533,6 +623,30 @@
       }
     })
   }
+
+  function totalHarga(){
+    let obat = $('#detailsubhargaobat').text();
+    let tindakan = $('#detailsubhargatindakan').text();
+    let lab = $('#detailsubhargalabor').text();
+    let total = parseInt(obat) + parseInt(tindakan) + parseInt(lab);
+    console.log('total '+total);
+    console.log('total '+tindakan);
+    console.log('total '+lab);
+    console.log('total '+obat);
+    $('#txtTotal').val(total);
+  }
+
+  function kembalian(){
+    let txtTotal  = $('#txtTotal').val();
+    let dibayar   = $('#dibayar').val();
+    if(dibayar == ''){
+      $('#kembalian').val(0);
+    }else{
+      let kembalian = parseInt(dibayar) - parseInt(txtTotal);
+      $('#kembalian').val(kembalian);
+    }
+    
+  }
   
 
   getNama();
@@ -541,13 +655,7 @@
   getHargaTindakan();
   detailObat();
 
-  $('#btnobat').on('click',function(){
-      save();
-  });
-
-  $('#btnlab').on('click',function(){
-      saveLab();
-  });
+  
 
 
 
@@ -557,6 +665,10 @@
 
   $('#kd_obat').on('change',function(){
       detailObat();
+  });
+
+  $('#dibayar').on('input',function(){
+      kembalian();
   });
 
   $('#lab').on('change',function(){

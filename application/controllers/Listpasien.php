@@ -92,6 +92,27 @@ class ListPasien extends CI_Controller
 		
 	}
 
+	public function pembayaran(){
+			$faktur = $this->input->post('faktur');
+			$total = $this->input->post('total');
+			$dibayar = $this->input->post('dibayar');
+			$kembalian = $this->input->post('kembalian');
+
+			$data = array(
+				"no_faktur"   => $faktur,
+				"total_harga" => $total,
+				"dibayar"     => $dibayar,
+				"kembalian"   => $kembalian
+			);
+			$result = $this->resep_model->insert($data);
+			if($result > 0){
+				echo json_encode('succes');
+			}else{
+				echo json_encode('failed');
+			}
+		
+	}
+
 	public function save($table,$data){
 		$data = $this->obat_model->saveRincian($table,$data);
 		if($data > 0){
@@ -107,7 +128,7 @@ class ListPasien extends CI_Controller
 		$result[]  = '';
 		
 		if($kd_rincian == 1){ //kd rincian 1 untuk mengambil detail_obat sesuai nofaktur 
-			$select    = "tbl_obat.nama_obat,detail_obat.sub_total";
+			$select    = "tbl_obat.nama_obat,detail_obat.sub_total,detail_obat.no";
 			$join      = 'detail_obat.kd_obat=tbl_obat.kd_obat';
 			$where     = '191115PJ-001';
 			$sum       = 'sub_total';
@@ -117,7 +138,7 @@ class ListPasien extends CI_Controller
 			];
 			
 		}else if($kd_rincian == 2){ //kd rincian 2 untuk mengambil detail_tindakan sesuai nofaktur
-			$select    = "tindakan,harga";
+			$select    = "tindakan,harga,detail_tindakan.no";
 			$join      = 'detail_tindakan.kd_tindakan=tbl_tindakan.no';
 			$where     = '191115PJ-001';
 			$sum       = 'harga';
@@ -127,7 +148,7 @@ class ListPasien extends CI_Controller
 			];
 			
 		}else{ //kd rincian 3 untuk mengambil detail_lab sesuai nofaktur
-			$select    = "tindakan,harga";
+			$select    = "tindakan,harga,detail_lab.no";
 			$join      = 'detail_lab.kd_labor=laboratorium.no';
 			$where     = '191115PJ-001';
 			$sum       = 'harga';
@@ -164,18 +185,46 @@ class ListPasien extends CI_Controller
 		$nofaktur = $this->input->post('faktur');
 
 		$where = array('no_faktur' => $nofaktur );
-		$data  = $this->diagnosa_model->getAllWhere($where); 
+		$data  = $this->diagnosa_model->getDetailWhere($where); 
 		echo json_encode($data);
 	}
 
 	public function getNama(){
 		$kd_dokter = $this->input->post('kd_dokter');
 		$kd_pasien = $this->input->post('kd_pasien');
-
-		
-
 		$nama = $this->pendaftaran_model->getNama($kd_dokter,$kd_pasien);
 		echo json_encode($nama);
+	}
+
+	public function hapusRincian(){
+		$jenis = $this->input->post('jenis');
+		$id    = $this->input->post('id');
+		if($jenis == 1){
+			$where  = array('no' => $id);
+			$result = $this->obat_model->deleteDetail($where);
+			if($result > 0){
+				echo json_encode('success');
+			}else{
+				echo json_encode('failed');
+			}
+		}else if($jenis == 2){
+			$where  = array('no' => $id);
+			$result = $this->tindakan_model->deleteDetail($where);
+			if($result > 0){
+				echo json_encode('success');
+			}else{
+				echo json_encode('failed');
+			}
+		}else{
+			$where  = array('no' => $id);
+			$result = $this->labor_model->deleteDetail($where);
+			if($result > 0){
+				echo json_encode('success');
+			}else{
+				echo json_encode('failed');
+			}
+		}
+
 	}
 }
 

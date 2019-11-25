@@ -13,19 +13,7 @@ class Obat_model extends MY_Model {
         return $this->db->affected_rows();
     }
 
-    public function getRincianObat($query){
-        return $this->db->query($query);
-    }
-
-
-
-    public function subHargas($nofaktur){
-        $this->db->select_sum('sub_total');
-        $this->db->from('detail_obat');
-        $this->db->where('no_faktur',$nofaktur);
-        return $this->db->get();
-        
-    }
+   
 }
 
 // <?php 

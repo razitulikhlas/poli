@@ -36,41 +36,9 @@
               <div class="card-body" style="background-color: #212529; color: white;">
               <form method="post" action=" <?= base_url().'resep/tambah';?> ">
               <div class="row ml-3">
-                    <div class="form-group" style="width:30%">
-                      <label>Dokter</label>
-                          <select style="width: 100%"  id="kd_dokter" name="kd_dokter">
-                             <?php 
-                                $dokter = $this->dokter_model->get_data();
-                             ?>
-                             <?php foreach($dokter as $row) : ?>
+                
 
-                                <option value="<?= $row['kd_dokter'] ?>"> <?= $row['nama']?> </option>
-                            
-                            <?php endforeach;?>
-                          </select>
-                       
-                     </div>
-
-                      <div class="form-group ml-3" style="width:30%">
-                          <label>Pasien</label>
-                              <select style="width: 100%;"  class="custom-select" id="kd_pasien" name="kd_pasien">
-                                  <?php 
-                                        
-                                      $pasien = $this->pasien_model->get_data();
-
-                                  ?>
-                                  <?php foreach($pasien as $row) : ?>
-
-                                    <option value="<?= $row['kd_pasien'] ?>"> <?= $row['nama']?> </option>
-                                
-                                  <?php endforeach;?>
-                              </select>
-                              
-                      </div>
-
-                      <div class="form-group ml-3 mt-2">
-                        <button type="submit" id="btntambah" class="btn  btn-warning ml-3 mt-4">TAMBAH</button>
-                      </div>
+                     
                  </form>
                </div>
                <!-- end row -->
@@ -80,8 +48,6 @@
                         <tr>
                             
                             <th scope="col">No faktur</th>
-                            <th scope="col">dokter</th>
-                            <th scope="col">pasien</th>
                             <th scope="col">Total Harga</th>
                             <th scope="col">Di Bayar</th>
                             <th scope="col">Kembalian</th>
@@ -93,8 +59,6 @@
                           <?php foreach($resep as $row) :  ?>
                           <tr>
                               <td><?= $row['no_faktur'] ?></td>
-                              <td><?= $row['namadokter'] ?></td>
-                              <td><?= $row['namapasien'] ?></td>
                               <td><?= $row['total_harga'] ?></td>
                               <td><?= $row['dibayar'] ?></td>
                               <td><?= $row['kembalian'] ?></td>

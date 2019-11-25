@@ -4,12 +4,7 @@ class Resep extends CI_Controller{
 
     public function index(){
 
-    	$query = "
-    		SELECT tbl_dokter.nama as 'namadokter', pasien.nama as 'namapasien', total_harga,dibayar,kembalian,pelayan,no_faktur FROM tbl_dokter,tbl_resep,pasien
-			WHERE tbl_dokter.kd_dokter = tbl_resep.kd_dokter && tbl_resep.kd_pasien = pasien.kd_pasien
-    	";
-
-        $data['resep'] = $this->resep_model->get_data($query)->result_array();
+        $data['resep'] = $this->resep_model->getAll();
 		$this->load->model('resep_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
@@ -50,8 +45,7 @@ class Resep extends CI_Controller{
 	public function detailObat(){
 		$kd_obat = $this->input->post('kd_obat');
 		$where   = array('kd_obat' => $kd_obat);
-		$data 	 = $this->resep_model->get_detail($where,'tbl_obat')->result();
-
+		$data 	 = $this->resep_model->getDetailWhere($where);
 		echo json_encode($data);
 	}
 

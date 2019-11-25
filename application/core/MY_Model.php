@@ -53,9 +53,19 @@ class MY_Model extends CI_Model {
         return  $this->db->get_where($this->table,$where)->result_array();
     }
 
+    public function getDetailWhere($where){
+        return  $this->db->get_where($this->detail,$where)->result_array();
+    }
+
     //fungsi untuk mengahapus data yang ada ditabel
     public function delete($where){
         $this->db->delete($this->table,$where);
+        return $this->db->affected_rows();
+    }
+
+    //fungsi untuk mengahapus data yang ada ditabel detail
+    public function deleteDetail($where){
+        $this->db->delete($this->detail,$where);
         return $this->db->affected_rows();
     }
 
