@@ -5,6 +5,22 @@
  */
 class Pendaftaran_model extends CI_Model
 {
+    public function detailPendaftaran(){
+        $today =date('ymd');
+        $query = "SELECT pasien.nama AS 'namapasien',pasien.nohp AS 'no_hp',pasien.alamat AS 'Alamat',
+                pasien.tgl_lahir,pasien.jenis_kelamin, tbl_dokter.nama AS 'namadokter',no_pendaftaran,
+                tbl_jadwal.waktu AS 'waktu',
+				tbl_jadwal.kd_dokter
+				FROM 
+                tbl_dokter,pasien,tbl_jadwal,tbl_pendaftaran
+				WHERE 
+                tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && 
+				tbl_jadwal.kd_jadwal = tbl_pendaftaran.kd_jadwal && 
+				tbl_pendaftaran.kd_pasien = pasien.kd_pasien && 
+				tbl_jadwal.kd_dokter = 30 &&
+                tbl_pendaftaran.no_pendaftaran like '191115%'";
+        return $this->db->query($query);
+    }
 	public function get_data($query){
 
 		return $this->db->query($query);
@@ -36,6 +52,21 @@ class Pendaftaran_model extends CI_Model
      public function get_faktur($query){
         return $this->db->query($query);
     }
+
+    public function getItemTambah($kodepasien){
+        $query = "
+			SELECT tbl_pendaftaran.kd_pasien,tbl_jadwal.kd_dokter,pasien.nama AS 'namapasien',
+			tbl_dokter.nama AS 'namadokter'
+			FROM tbl_jadwal,tbl_pendaftaran,pasien,tbl_dokter
+			WHERE 
+			tbl_pendaftaran.kd_pasien=pasien.kd_pasien &&
+			tbl_pendaftaran.kd_jadwal=tbl_jadwal.kd_jadwal &&
+			tbl_jadwal.kd_dokter = tbl_dokter.kd_dokter &&
+			tbl_pendaftaran.no_pendaftaran = '$kodepasien'
+        ";
+        
+        return $this->db->query($query)->row();
+    }
 }
 
 // <?php
@@ -48,37 +79,37 @@ class Pendaftaran_model extends CI_Model
 //         parent::__construct($table,$detail);
 //     }
 
-//     public function detailPendaftaran(){
-//         $today =date('ymd');
-//         $query = "SELECT pasien.nama AS 'namapasien',pasien.nohp AS 'no_hp',pasien.alamat AS 'Alamat',
-//                 pasien.tgl_lahir,pasien.jenis_kelamin, tbl_dokter.nama AS 'namadokter',no_pendaftaran,
-//                 tbl_jadwal.waktu AS 'waktu',
-// 				tbl_jadwal.kd_dokter
-// 				FROM 
-//                 tbl_dokter,pasien,tbl_jadwal,tbl_pendaftaran
-// 				WHERE 
-//                 tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && 
-// 				tbl_jadwal.kd_jadwal = tbl_pendaftaran.kd_jadwal && 
-// 				tbl_pendaftaran.kd_pasien = pasien.kd_pasien && 
-// 				tbl_jadwal.kd_dokter = 30 &&
-//                 tbl_pendaftaran.no_pendaftaran like '191115%'";
-//         return $this->db->query($query);
-//     }
+    // public function detailPendaftaran(){
+    //     $today =date('ymd');
+    //     $query = "SELECT pasien.nama AS 'namapasien',pasien.nohp AS 'no_hp',pasien.alamat AS 'Alamat',
+    //             pasien.tgl_lahir,pasien.jenis_kelamin, tbl_dokter.nama AS 'namadokter',no_pendaftaran,
+    //             tbl_jadwal.waktu AS 'waktu',
+	// 			tbl_jadwal.kd_dokter
+	// 			FROM 
+    //             tbl_dokter,pasien,tbl_jadwal,tbl_pendaftaran
+	// 			WHERE 
+    //             tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && 
+	// 			tbl_jadwal.kd_jadwal = tbl_pendaftaran.kd_jadwal && 
+	// 			tbl_pendaftaran.kd_pasien = pasien.kd_pasien && 
+	// 			tbl_jadwal.kd_dokter = 30 &&
+    //             tbl_pendaftaran.no_pendaftaran like '191115%'";
+    //     return $this->db->query($query);
+    // }
 
-//     public function getItemTambah($kodepasien){
-//         $query = "
-// 			SELECT tbl_pendaftaran.kd_pasien,tbl_jadwal.kd_dokter,pasien.nama AS 'namapasien',
-// 			tbl_dokter.nama AS 'namadokter'
-// 			FROM tbl_jadwal,tbl_pendaftaran,pasien,tbl_dokter
-// 			WHERE 
-// 			tbl_pendaftaran.kd_pasien=pasien.kd_pasien &&
-// 			tbl_pendaftaran.kd_jadwal=tbl_jadwal.kd_jadwal &&
-// 			tbl_jadwal.kd_dokter = tbl_dokter.kd_dokter &&
-// 			tbl_pendaftaran.no_pendaftaran = '$kodepasien'
-//         ";
+    // public function getItemTambah($kodepasien){
+    //     $query = "
+	// 		SELECT tbl_pendaftaran.kd_pasien,tbl_jadwal.kd_dokter,pasien.nama AS 'namapasien',
+	// 		tbl_dokter.nama AS 'namadokter'
+	// 		FROM tbl_jadwal,tbl_pendaftaran,pasien,tbl_dokter
+	// 		WHERE 
+	// 		tbl_pendaftaran.kd_pasien=pasien.kd_pasien &&
+	// 		tbl_pendaftaran.kd_jadwal=tbl_jadwal.kd_jadwal &&
+	// 		tbl_jadwal.kd_dokter = tbl_dokter.kd_dokter &&
+	// 		tbl_pendaftaran.no_pendaftaran = '$kodepasien'
+    //     ";
         
-//         return $this->db->query($query)->row();
-//     }
+    //     return $this->db->query($query)->row();
+    // }
 
 //     public function getNama(){
 //         $query = "
