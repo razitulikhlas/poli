@@ -43,7 +43,7 @@
                           <td><?= $row["tgl_lahir"] ?></td>
                           <td><?= $row["jenis_kelamin"] ?></td>
                           <td><?= $row["no_hp"] ?></td>
-                          <td>
+                          <td id="aksi">
                             <a href="<?= base_url()?>listpasien/tambah/<?= $row['no_pendaftaran']?>/<?= $row['kd_dokter'] ?> " class="btn btn-primary tombol-hapus"><i class="fa fa-plus"></i></a>
                           </td>
                          
@@ -104,5 +104,31 @@
     </div>
   </div>
 </div>
+
+<script>
+checkStatus();
+  function checkStatus(){
+    $.ajax({
+      type     : 'POST',
+      url      : '<?= base_url()."listpasien/checkStatus" ?>',
+      dataType : 'json',
+      success  : function(hasil){
+        console.log(hasil);
+        let baris = '';
+        
+        for(let i=0; i<hasil.length;i++){
+          let huruf = parseInt(hasil[i].status);
+          
+        if(huruf == 1){
+          baris+=`<span class="badge badge-warning">Done</span>`;
+          $('#aksi').html(baris);
+        }else{
+        
+        }
+      }
+    }
+  })
+}
+</script>
 
 

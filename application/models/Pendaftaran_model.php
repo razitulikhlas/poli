@@ -1,10 +1,19 @@
-<?php 
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * 
- */
-class Pendaftaran_model extends CI_Model
-{
+class Pendaftaran_model extends MY_Model {
+    public function __construct(){
+        $table = 'tbl_pendaftaran';
+        $detail = '';
+        parent::__construct($table,$detail);
+    }
+
+    public function checkStatus(){
+        $this->db->select('status,no_pendaftaran');
+        $this->db->from('tbl_pendaftaran');
+        return $this->db->get()->result_array();
+    }
+
     public function detailPendaftaran(){
         $today =date('ymd');
         $query = "SELECT pasien.nama AS 'namapasien',pasien.nohp AS 'no_hp',pasien.alamat AS 'Alamat',
@@ -68,6 +77,7 @@ class Pendaftaran_model extends CI_Model
         return $this->db->query($query)->row();
     }
 }
+
 
 // <?php
 // defined('BASEPATH') OR exit('No direct script access allowed');

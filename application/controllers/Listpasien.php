@@ -226,7 +226,9 @@ class ListPasien extends CI_Controller
 		}
 
 	}
+
+	public function checkStatus(){
+		$data = $this->pendaftaran_model->checkStatus();
+		echo json_encode($data);
+	}
 }
-
-
- ?>
