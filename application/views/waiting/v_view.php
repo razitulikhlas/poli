@@ -39,10 +39,10 @@
                       <?php foreach($pasien->result_array() as $row) : ?>
                         <tr>
                           <th scope="row"><?= $row['no_pendaftaran'] ?></th>
-                          <td><?= $row["namapasien"] ?></td>
+                          <td><?= $row["nama"] ?></td>
                           <td><?= $row["tgl_lahir"] ?></td>
                           <td><?= $row["jenis_kelamin"] ?></td>
-                          <td><?= $row["no_hp"] ?></td>
+                          <td><?= $row["nohp"] ?></td>
                           <td id="aksi">
                             <a href="<?= base_url()?>listpasien/tambah/<?= $row['no_pendaftaran']?>/<?= $row['kd_dokter'] ?> " class="btn btn-primary tombol-hapus"><i class="fa fa-plus"></i></a>
                           </td>

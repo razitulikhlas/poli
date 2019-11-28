@@ -6,6 +6,7 @@ class ListPasien extends CI_Controller
 		$data = [
 			"pasien" => $this->pendaftaran_model->detailPendaftaran()
 		];
+		
 		$this->load->model('dokter_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
@@ -14,15 +15,25 @@ class ListPasien extends CI_Controller
 	}
 
 	public function tambah($kodepasien,$kd_dokter){
+		// $detail_medik 	 = array('no_faktur' => $nofaktur);
+		// $detail_diagnosa = array('no_faktur' => $nofaktur);
+		// $data = [
+		// "rekam_medik" => $this->rekammedis_model->detailMedik($detail_medik,'rekam_medik')->row(),
+		
+		// ];
 		$data = [
 			"kodepasien" => $kodepasien,
 			"detail"  	 => $this->pendaftaran_model->getItemTambah($kodepasien),
 			"diagnosa"   => $this->diagnosa_model->getAll(),
+			"obat"		 => $this->obat_model->getAll(),
+			"tindakan"   => $this->tindakan_model->getAll(),
+			"karyawan"   => $this->karyawan_model->getAll(),
+			"lab"		 => $this->labor_model->getAll()
 		];
  		$this->load->model('pendaftaran_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
-		$this->load->view('waiting/v_add',$data);
+		$this->load->view('waiting/v_diagnosa',$data);
 		$this->load->view('templates/footer');
 	}
 
