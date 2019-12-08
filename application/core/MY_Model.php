@@ -34,23 +34,27 @@ class MY_Model extends CI_Model {
     }
 
     //fungsi untuk mengambil field yang ada di tabel menggunakan where
-    public function getWhere($select,$where){
-        $hasil;
-        /**
-         * Jika yang diselect tidak ada maka tampilkan semua field,
-         * Tapi jika ada yang diselect maka tampilkan apa yang ingin diselect
-        */
-        if($select==""){
-            $hasil = $this->db->get_where($this->table,$where)->row_array();
-        }else{
-            $this->db->select($select);
-            $hasil = $this->db->get_where($this->table,$where)->row_array();
-        }
-        return $hasil;
-    }
+    // public function getWhere($select,$where){
+    //     $hasil;
+    //     /**
+    //      * Jika yang diselect tidak ada maka tampilkan semua field,
+    //      * Tapi jika ada yang diselect maka tampilkan apa yang ingin diselect
+    //     */
+    //     if($select==""){
+    //         $hasil = $this->db->get_where($this->table,$where)->row_array();
+    //     }else{
+    //         $this->db->select($select);
+    //         $hasil = $this->db->get_where($this->table,$where)->row_array();
+    //     }
+    //     return $hasil;
+    // }
 
     public function getAllWhere($where){
         return  $this->db->get_where($this->table,$where)->result_array();
+    }
+
+    public function getWhere($where){
+        return  $this->db->get_where($this->table,$where)->row();
     }
 
     public function getDetailWhere($where){

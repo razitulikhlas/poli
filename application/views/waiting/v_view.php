@@ -6,9 +6,7 @@
  
          <div class="card">
               <div class="card-header" style="background-color: aqua">
-                  <?php $row = $pasien->row(); ?>
-                <h3 class="card-title">List pasien dokter <b><?= $row->namadokter ?></b> hari ini</h3>
-
+           
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse" style="color: white">
                     <i class="fas fa-minus"></i></button>
@@ -17,11 +15,10 @@
               </div>
 
               <div class="card-body" style="background-color: #212529; color: white;">
-              <div class="flash-data" data-flashdata="<?= $this->session->flashdata('flash');?>"></div>
-               <!--  <a href="<?= base_url()?>jadwal/tambah" class="btn btn-danger mb-3">Tambah Data</a> -->
+            
                 <button type="button" id="btncel" class="btn bg-gradient-success mb-3" >Export Excell</button>
                 <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button>
-               <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button> -->
+       
               
                 <table id="tabel_id" class="table table-bordered mt-3 mb-3" >
                   <thead>
@@ -34,22 +31,8 @@
                       <th scope="col">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody>
-                   <?php $i = 1; ?>
-                      <?php foreach($pasien->result_array() as $row) : ?>
-                        <tr>
-                          <th scope="row"><?= $row['no_pendaftaran'] ?></th>
-                          <td><?= $row["nama"] ?></td>
-                          <td><?= $row["tgl_lahir"] ?></td>
-                          <td><?= $row["jenis_kelamin"] ?></td>
-                          <td><?= $row["nohp"] ?></td>
-                          <td id="aksi">
-                            <a href="<?= base_url()?>listpasien/tambah/<?= $row['no_pendaftaran']?>/<?= $row['kd_dokter'] ?> " class="btn btn-primary tombol-hapus"><i class="fa fa-plus"></i></a>
-                          </td>
-                         
-                        </tr>
-                      <?php $i++; ?>
-              <?php endforeach; ?>
+                  <tbody id="target">
+       
               </tbody>
               </table>
             </div>
@@ -96,7 +79,7 @@
    
         <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Ubah Data</button>
-
+        <a href=""></a>
       </form>
     
       </div>
@@ -105,30 +88,48 @@
   </div>
 </div>
 
+
+
 <script>
-checkStatus();
-  function checkStatus(){
-    $.ajax({
-      type     : 'POST',
-      url      : '<?= base_url()."listpasien/checkStatus" ?>',
-      dataType : 'json',
-      success  : function(hasil){
-        console.log(hasil);
-        let baris = '';
-        
-        for(let i=0; i<hasil.length;i++){
-          let huruf = parseInt(hasil[i].status);
-          
-        if(huruf == 1){
-          baris+=`<span class="badge badge-warning">Done</span>`;
-          $('#aksi').html(baris);
-        }else{
-        
+
+ ambilData();
+  function ambilData(){
+      $.ajax({
+        type     : 'POST',
+        url      : '<?= base_url()."listpasien/getData"?>',
+        dataType : 'json',
+        success  : function(data){
+            console.log(data);
+            let baris = '';
+            
+            for(var i=0;i<data.pasien.length;i++){
+              let status = checkStatus(data.pasien[i].status,data.pasien[i].no_pendaftaran,data.pasien[i].kd_dokter,data.pasien[i].kd_pasien);
+              baris += `<tr>
+                          <td>`+data.pasien[i].no_pendaftaran+`</td>
+                          <td>`+data.pasien[i].nama+`</td>+
+                          <td>`+data.pasien[i].tgl_lahir+`</td>+
+                          <td>`+data.pasien[i].jenis_kelamin+`</td>+
+                          <td>`+data.pasien[i].nohp+`</td>+
+                          <td id="aksi">
+                           `+status+`
+                       </tr>`;
+            }
+            $('#target').html(baris);
         }
-      }
+      });
+  }
+
+  function checkStatus(status,nopen,kd_dokter,kd_pasien){
+      let data;
+      if(status == 0){
+        data = `<a href="<?= base_url()?>listpasien/tambah/`+nopen+`/`+kd_dokter+`/`+kd_pasien+` " class="btn btn-primary tombol-hapus"><i class="fa fa-edit"></i></a>`
+      }else{
+        data = `<a href="<?= base_url()?>listpasien/Detail/`+nopen+`" class="btn btn-warning tombol-hapus"><i class="fa fa-eye"></i></a>`
+      }  
+      return data;
     }
-  })
-}
+
+    
 </script>
 
 

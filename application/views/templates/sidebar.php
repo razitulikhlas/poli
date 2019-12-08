@@ -100,7 +100,7 @@
           <li class="nav-item">
             <a href="<?php echo base_url() ?>resep/index" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>
-              <p>Resep</p>
+              <p>Transaksi</p>
             </a>
           </li>
           <li class="nav-item">
@@ -109,12 +109,12 @@
               <p>List Pasien</p>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="<?php echo base_url() ?>User/index" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>
               <p>User</p>
             </a>
-          </li>
+          </li> -->
            <li class="nav-item">
             <a href="<?php echo base_url() ?>Diagnosa/index" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>

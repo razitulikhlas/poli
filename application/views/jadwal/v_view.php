@@ -60,7 +60,7 @@
                           <td><img src="<?= base_url()?>assets/foto/<?= $row['photo']?>" height="50px"></td>
                           
                           <td>
-                           <a href="" class="btn btn-primary">Detai</a>
+                         
                            <button type="button" onclick="submit(<?= $row['kd_jadwal']?>)" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button>
                            <a href="<?= base_url()?>jadwal/hapus/<?= $row['kd_jadwal']?> " class="btn btn-danger tombol-hapus"><i class="fa fa-trash"></i></a>
                           </td>

@@ -160,7 +160,10 @@
       <div class="flash-data" data-flashdata="<?= $this->session->flashdata('flash');?>"></div>
           <form action="<?=base_url('pendaftaran/simpanData') ?>" method="post">
                 <div class="form-group">
-                    <input type="hidden" class="form-control" id="kdjadwal" name="kdjadwal" value="" >
+                    <input type="hidden" class="form-control" id="kdjadwal" name="kdjadwal"  >
+                </div>
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="kddokter" name="kddokter"  >
                 </div>
                 <div class="form-group">
                     <label for="nopendaftaran">NO PENDAFTARAN</label>
@@ -175,13 +178,12 @@
                               <select class="custom-select" id="kd_pasien" name="kd_pasien">
                                   <?php 
                                         
-                                      $pasien = $this->pasien_model->get_data();
+                                      $pasien = $this->pasien_model->getAll();
 
                                   ?>
                                   <?php foreach($pasien as $row) : ?>
-
                                     <option value="<?= $row['kd_pasien'] ?>"> <?= $row['nama']?> </option>
-                                
+              
                                   <?php endforeach;?>
                               </select>
                               
@@ -216,9 +218,7 @@
       dataType : 'json',
       success  : function(hasil){
         console.log('no faktur :'+hasil);
-         $("[name='nopendaftaran']").val(hasil);
-
-
+        //  $("[name='nopendaftaran']").val(hasil);
       }
     });
   }
@@ -254,20 +254,21 @@
      });
 
   function submit(x){
-
+    let kd_poli   = $('#kd_poli').val();
+    let kd_dokter = getDokter(x);
+    console.log("kd"+kd_dokter);
     $.ajax({
           type     : 'POST',
-          data     : 'kd_jadwal='+x,
-          url      : '<?= base_url()."jadwal/edit"?>',
+          data     : 'kd_jadwal='+x+
+                     '&kd_poli='+kd_poli+
+                     '&kd_dokter='+kd_dokter,
+          url      : '<?= base_url()."pendaftaran/getFaktur"?>',
           dataType : 'json',
           success  : function(hasil){
             console.log(hasil);
-           
-            $("[name='waktu']").val(hasil[0].waktu);
-            $("[name='jadwal']").val(hasil[0].tanggal);
-            $("[name='keterangan']").val(hasil[0].Keterangan);
-            $("[name='kdjadwal']").val(x);  
-
+            $("[name='nopendaftaran']").val(hasil);
+            $("[name='kdjadwal']").val(x);
+              
           }
         }); 
   }
@@ -276,6 +277,7 @@
 
   function getDataPasien(){
     let kd_poli   = $('#kd_poli').val();
+    
 
     $.ajax({
       type     : 'POST',
@@ -301,10 +303,30 @@
             $('#target').html(baris);
             $('#totalpasien').html(data.total[0].jumlah);
             $('#totaldokter').html(data.dokter[0].jumlah);
-            $('#riwayat').html(data.riwayat[0].jumlah);
+            $('#riwayat').html(data.riwayat);
       }
     });
   }
 
+  function getDokter(kd_jadwal){
+    var result;
+    $.ajax({
+      type : 'POST',
+      data : 'kd_jadwal='+kd_jadwal,
+      url  : '<?= base_url()."pendaftaran/getKodeDokter"?>',
+      async: false,
+      dataType : 'json',
+      success : function(hasil){
+        console.log(hasil.kd_dokter);
+        result = hasil.kd_dokter;    
+      }
+      
+    });
 
-</script>
+    return result;
+    
+   
+  }
+
+
+</script> 

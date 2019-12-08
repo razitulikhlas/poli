@@ -215,7 +215,7 @@ $(function(){
         }); 
   }
 
-  checkTabel();
+  
 
   function checkTabel(){
     let str     = $('#stock').text();
@@ -308,23 +308,46 @@ ambilData();
     let spans   = '<span class="badge badge-danger">Kadaluarsa</span>';
     let data;
 
-    if(tglnow[0] <= exp[0] ){
-      if(tglnow[1] <= exp[1]){
-        if(tglnow[2] <= exp[2]){
-          data = n;
+    console.log("year "+tglnow[0]);
+    console.log("month "+tglnow[1]);
+    console.log("date "+tglnow[2]);
+
+    console.log("years "+exp[0]);
+    console.log("months "+exp[1]);
+    console.log("dates"+exp[2]);
+
+    if(tglnow[0] <= exp[0]){
+        if(tglnow[1] <= exp[1]){
+          if("0"+tglnow[2] <= exp[2]){
+           data = n; 
+          }else{
+            data=spans;
+          } 
         }else{
-         data = spans;  
+          data = spans;
         }
-      }else{
-        data = spans;  
-      }
-      
+        
     }else{
-      data = spans;
+      data=spans;
     }
 
+    // if(tglnow[0] <= exp[0] ){
+    //   if(tglnow[1] <= exp[1]){
+    //     if(tglnow[2] <= exp[2]){
+    //       data = n;
+    //     }else{
+    //      data = spans;  
+    //     }
+    //   }else{
+    //     data = spans;  
+    //   }
+      
+    // }else{
+    //   data = spans;
+    // }
+
     return data;
-    }
+  }
   
 </script>
  

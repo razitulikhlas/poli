@@ -10,13 +10,13 @@ class Pendaftaran_model extends MY_Model {
 
     public function detailPendaftaran(){
         $today =date('ymd');
-        $this->db->select("tbl_pendaftaran.no_pendaftaran,tbl_jadwal.kd_dokter,tbl_dokter.nama AS 'namadokter', pasien.nama,tgl_lahir,pasien.jenis_kelamin,pasien.nohp");
+        $this->db->select("tbl_pendaftaran.no_pendaftaran,tbl_pendaftaran.kd_pasien,tbl_jadwal.kd_dokter,tbl_dokter.nama AS 'namadokter', pasien.nama,tgl_lahir,pasien.jenis_kelamin,pasien.nohp,tbl_pendaftaran.status");
         $this->db->from('pasien');
         $this->db->join('tbl_pendaftaran','tbl_pendaftaran.kd_pasien=pasien.kd_pasien');
         $this->db->join('tbl_jadwal','tbl_jadwal.kd_jadwal=tbl_pendaftaran.kd_jadwal');
         $this->db->join('tbl_dokter','tbl_dokter.kd_dokter=tbl_jadwal.kd_dokter');
-        $this->db->like('tbl_pendaftaran.no_pendaftaran','191115','after');//change value no pendaftaran
-        $this->db->where('tbl_jadwal.kd_dokter','30');//change value dokter
+        $this->db->like('tbl_pendaftaran.no_pendaftaran',$today,'after');//change value no pendaftaran
+        $this->db->where('tbl_jadwal.kd_dokter','28');//change value dokter
         return $this->db->get();
     }
 
@@ -42,6 +42,38 @@ class Pendaftaran_model extends MY_Model {
 			where kd_dokter='$kd_dokter' && kd_pasien='$kd_pasien'
 		";
         return $this->db->query($query)->row();
+    }
+
+    public function get_faktur($query){
+        return $this->db->query($query);
+    }
+
+    public function getDataPasien($query){
+        return $this->db->query($query)->result();
+    }
+
+    public function countPasien(){
+       return  $this->db->count_all('tbl_pendaftaran');
+    }
+
+    // public function getFaktur(){
+    //     $this->db->select_max('no_pendaftaran');
+    //     $this->db->from('tbl_pendaftaran');
+    //     $this->db->where('')
+    //     select max(no_pendaftaran) as last from tbl_pendaftaran where no_pendaftaran like '$nopendaf%' & ";
+    // }
+
+    public function getkdDokter($where){
+        $this->db->select('kd_dokter');
+        $this->db->from('tbl_jadwal');
+        $this->db->where('kd_jadwal',$where);
+        return $this->db->get()->row();
+    }
+
+  public function checkStatus(){
+        $this->db->select('status,no_pendaftaran');
+        $this->db->from('tbl_pendaftaran');
+        return $this->db->get()->result_array();
     }
 
     

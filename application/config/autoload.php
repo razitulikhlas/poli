@@ -147,6 +147,7 @@ $autoload['model'] = array(
 	'tindakan_model',
 	'user_model',
 	'rekammedis_model',
+	'keluhan_model',
 	'diagnosa_model',
 	'jenispoli_model'
 	);

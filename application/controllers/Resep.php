@@ -3,15 +3,46 @@
 class Resep extends CI_Controller{
 
     public function index(){
-
-        $data['resep'] = $this->resep_model->getAll();
+        
 		$this->load->model('resep_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
-		$this->load->view('resep/v_view',$data);
+		$this->load->view('resep/v_view');
 		$this->load->view('templates/footer');
 	}
-	
+
+	public function update(){
+		$faktur   = $this->input->post('no_faktur');
+		$karyawan  = $this->input->post('karyawan');
+		$dibayar   = $this->input->post('dibayar');
+		$kembalian = $this->input->post('kembalian');
+
+		$where = array('no_faktur' => $faktur);
+		$data  = array(
+			"pelayan"   => $karyawan,
+			"dibayar"   => $dibayar,
+			"kembalian" => $kembalian
+		);
+
+		$this->resep_model->update($data,$where);
+		$this->session->set_flashdata('flash','di bayar');
+		redirect('resep/index');
+
+
+	}
+
+	public function getDatas(){
+		$data['resep'] = $this->resep_model->getAll();
+		echo json_encode($data);
+
+	}
+	public function edit(){
+		$nofaktur = $this->input->post('no_faktur');
+		$where = array('no_faktur' => $nofaktur);
+		$data  = $this->resep_model->getAllWhere($where);
+		echo json_encode($data);
+		
+	}
 	public function tambah(){
 			
 		$data = [

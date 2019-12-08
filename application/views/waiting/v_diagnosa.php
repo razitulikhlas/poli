@@ -19,7 +19,7 @@
                                             <label for="Nama">Nama</label>
                                         </div>
                                         <div class="col-6">
-                                            Hidayatul Sidiq
+                                            <?= $pasien->nama?>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -27,7 +27,7 @@
                                             <label for="Nama">Tanggal Lahir</label>
                                         </div>
                                         <div class="col-6">
-                                            04 November 1197
+                                        <?= $pasien->tgl_lahir?>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -35,7 +35,7 @@
                                             <label for="Nama">Jenis Kelamin</label>
                                         </div>
                                         <div class="col-6">
-                                            Pria
+                                        <?= $pasien->jenis_kelamin?>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -43,7 +43,7 @@
                                             <label for="Nama">Alamat</label>
                                         </div>
                                         <div class="col-6">
-                                            Jalan Gunuang sariak no 86
+                                        <?= $pasien->alamat?>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -51,7 +51,7 @@
                                             <label for="Nama">No HP</label>
                                         </div>
                                         <div class="col-6">
-                                            082169146904
+                                        <?= $pasien->nohp?>
                                         </div>
                                     </div>
                                 </div>
@@ -79,23 +79,24 @@
                             <input type="hidden" class="form-control" id="kddokter" name="kddokter" value="<?= $detail->kd_dokter; ?>">
                 </div>
                   <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                          <label for="namadokter">DOKTER</label>
-                          <input type="text" class="form-control" id="namadokter" name="namadokter" value="<?= $detail->namadokter ?>" placeholder="Nama Dokter" readonly="">
-                      </div>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-10">
                       <div class="form-group">
                           <label for="keluhan">Keluhan</label>
                           <input type="text" class="form-control" id="keluhan" name="keluhan"  placeholder="Keluhan Pasien" >
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    
+                    <div class="col-md-2 mt-4">
+                     <button id="btnkeluhan" onclick="save(4)" class="btn btn-warning mt-2" style="width: 100%">tambah</button>
+                    </div>
+                    <!-- end row diagnosa -->
+                  </div>
+                  <div class="row">
+                    <div class="col-md-10">
                       <label for="Diagnosa">Diagnosa</label>
                       <div class="form-group">
                            <div class="select2-purple">
-                              <select class="select2" id="diagnosa" name="diagnosa[]" multiple="multiple" data-placeholder="Pilih diagnosa" data-dropdown-css-class="select2-purple" style="width: 100%;">
+                              <select class="form-control" id="diagnosa" name="diagnosa" >
                                 <?php foreach($diagnosa as $row) : ?>
                                   <option value="<?= $row['no'] ?>"><?= $row['nama_diagnosa'] ?></option>
                                 <?php endforeach; ?>
@@ -104,7 +105,7 @@
                       </div>
                     </div>
                     <div class="col-md-2 mt-4">
-                     <button id="btndiagnosa" class="btn btn-warning mt-2" style="width: 100%">tambah</button>
+                     <button id="btndiagnosa" onclick="save(5)" class="btn btn-warning mt-2" style="width: 100%">tambah</button>
                     </div>
                     <!-- end row diagnosa -->
                   </div>
@@ -228,24 +229,21 @@
                 </div>
               </div> 
                 <div class="card-body">
-                <label style="color: #808080">Keluhan</label>  
+                <label class="ml-2" style="color: #808080">Keluhan</label>  
                     <div class="ml-2 keluhan" style="color: #808080">
-                       <div class="row">
-                          <p>Sakit Kepala</p>
+                       <div class="row" id="rinciankeluhan">
+                          
                        </div>
                     </div> 
-
-                   <label style="color: #808080">Diagnosa</label>  
+                     <hr>
+                   <label class="ml-2" style="color: #808080">Diagnosa</label>  
                     <div class="ml-2 diagnosa" style="color: #808080">
-                       <div class="row">
-                          <p>Demam Berdarah</p>
-                       </div>
-                       <div class="row">
-                          <p>Sakit Kepala</p>
+                       <div class="row" id="rinciandiagnosa">
+                          
                        </div>
                     </div>
-
-                    <label style="color: #808080">OBAT</label>  
+                     <hr>
+                    <label class="ml-2" style="color: #808080">OBAT</label>  
                     <div class="ml-2 " style="color: #808080">
                     <div class="row" id="rincianobat">  
                       
@@ -285,6 +283,10 @@
                   <div class="row ">
                       <div class="col-9"><label for="">TOTAL HARGA</label></div>
                       <div class="col-3"id="txtTotal">Rp 0</div>
+                  </div> 
+                  <div class="row mt-4">
+                      <div class="col-9"><button class="btn btn-primary" onclick="simpanData()">Simpan</button></div>
+                     
                   </div>             
                 </div>
             </div>
@@ -301,6 +303,30 @@ let faktur    = $('#nofaktur').val();
   $(document).ready(function(){
       $("select").select2();
   });
+
+
+  function simpanData(){
+    let totalHarga = $("#txtTotal").text();
+    totalHarga     = convertHarga(totalHarga);
+    console.log(totalHarga);
+    $.ajax({
+            type     : 'POST',
+            data     :  'total='+totalHarga+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/simpanData"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              console.log(hasil);
+              if(hasil == 'succes'){
+                location.href = '<?= base_url()."listpasien/index" ?>';
+              }
+            },
+            error: function(hasil){
+              alert("data sudah ada");
+            }  
+        });
+
+  }
 
   function bayar(){
       let txtTotal  = $('#txtTotal').val();
@@ -349,11 +375,13 @@ let faktur    = $('#nofaktur').val();
       }else if($rincian_kode == 2){
           let kd_tindakan   = $("[name='kd_tindakan']").val();
           let kd_krywntdkn  = $("[name='karyawan_tindakan']").val();
+          let harga         = $("[name='hargatindakan']").val();
       
           $.ajax({
             type     : 'POST',
             data     :  'kd_tindakan='+kd_tindakan+
                         '&kd_rincian='+$rincian_kode+
+                        '&harga='+harga+
                         '&kd_karyawan='+kd_krywntdkn+
                         '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/saveRincian"?>',
@@ -366,14 +394,49 @@ let faktur    = $('#nofaktur').val();
             }  
           }
         });
+      }else if($rincian_kode == 4){
+          let keluhan = $("[name='keluhan']").val();
+          $.ajax({
+            type     : 'POST',
+            data     :  'keluhan='+keluhan+
+                        '&kd_rincian='+$rincian_kode+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/saveRincian"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              console.log(hasil);
+              if(hasil == 'succes'){
+                $('#keluhan').val('');
+                getRincian($rincian_kode);
+            }  
+          }
+        });
+      }else if($rincian_kode == 5){
+          let diagnosa = $("[name='diagnosa']").val();
+          $.ajax({
+            type     : 'POST',
+            data     :  'diagnosa='+diagnosa+
+                        '&kd_rincian='+$rincian_kode+
+                        '&faktur='+faktur,
+            url      : '<?= base_url()."listpasien/saveRincian"?>',
+            dataType : 'json',
+            success  : function(hasil){
+              console.log(hasil);
+              if(hasil == 'succes'){
+                getRincian($rincian_kode);
+            }  
+          }
+        });
       }else{
-         let kd_tindakan    = $("[name='kd_lab']").val();
-          let kd_krywnlab   = $("[name='karyawan_lab']").val();
+         let kd_tindakan = $("[name='kd_lab']").val();
+         let kd_krywnlab = $("[name='karyawan_lab']").val();
+         let harga       = $("[name='hargalab']").val();
 
           $.ajax({
             type     : 'POST',
             data     :  'kd_labor='+kd_tindakan+
                         '&kd_rincian='+$rincian_kode+
+                        '&harga='+harga+
                         '&kd_karyawan='+kd_krywnlab+
                         '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/saveRincian"?>',
@@ -386,6 +449,7 @@ let faktur    = $('#nofaktur').val();
           }
         });
       }  
+      
   }
 
   
@@ -440,8 +504,11 @@ let faktur    = $('#nofaktur').val();
             var no=1;
             if(data.rincian.length > 0){
               for(var i=0;i<data.rincian.length;i++){
-              baris += `<div class="col-md-9">
+              baris += `<div class="col-md-7">
                             `+data.rincian[i].tindakan+`
+                          </div>
+                          <div class="col-md-2">
+                          <button class='btn btn-danger btn-xs' onclick="hapusTindakan('`+data.rincian[i].no+`')"><i class="fa fa-trash "></i></button>
                           </div>
                           <div class="col-md-3">
                            Rp  `+data.rincian[i].harga+`
@@ -452,9 +519,65 @@ let faktur    = $('#nofaktur').val();
               $('#detailsubhargatindakan').text('Rp '+data.subharga.harga);
               totalHarga();
             }else{
-              $('tr').remove('#listtindakan');
-              $('#detailsubhargatindakan').text("0");
+              $('#rinciantindakan').html('');
+              $('#detailsubhargatindakan').text("Rp 0");
               totalHarga();
+            }   
+        }
+      });
+    }else if($kd_rincian == 4){
+      $.ajax({
+        type     : 'POST',
+        data     : 'faktur='+faktur+
+                   '&kd_rincian='+$kd_rincian,
+        url      : '<?= base_url()."listpasien/getRincian"?>',
+        dataType : 'json',
+        success  : function(data){
+          console.log(data);
+            var baris='';
+            var no=1;
+            if(data.keluhan.length > 0){
+              for(var i=0;i<data.keluhan.length;i++){
+              baris += `<div class="col-md-7">`
+                         +data.keluhan[i].keluhan+`
+                          </div>
+                          <div class="col-md-2">
+                          <button class='btn btn-danger btn-xs' onclick="hapusKeluhan('`+data.keluhan[i].no+`')"><i class="fa fa-trash "></i></button>
+                          </div>`
+                          ;
+              no++;
+              }
+              $('#rinciankeluhan').html(baris);
+            }else{
+              $('#rinciankeluhan').html('');
+            }   
+        }
+      });
+    }else if($kd_rincian == 5){
+      $.ajax({
+        type     : 'POST',
+        data     : 'faktur='+faktur+
+                   '&kd_rincian='+$kd_rincian,
+        url      : '<?= base_url()."listpasien/getRincian"?>',
+        dataType : 'json',
+        success  : function(data){
+          console.log(data);
+            var baris='';
+            var no=1;
+            if(data.diagnosa.length > 0){
+              for(var i=0;i<data.diagnosa.length;i++){
+              baris += `<div class="col-md-7">`
+                         +data.diagnosa[i].nama_diagnosa+`
+                          </div>
+                          <div class="col-md-2">
+                          <button class='btn btn-danger btn-xs' onclick="hapusDiagnosa('`+data.diagnosa[i].no+`')"><i class="fa fa-trash "></i></button>
+                          </div>`
+                          ;
+              no++;
+              }
+              $('#rinciandiagnosa').html(baris);
+            }else{
+              $('#rinciandiagnosa').html('');
             }   
         }
       });
@@ -471,8 +594,11 @@ let faktur    = $('#nofaktur').val();
             var no=1;
             if(data.rincian.length > 0){
                   for(var i=0;i<data.rincian.length;i++){
-                  baris += `<div class="col-md-9">
+                  baris += `<div class="col-md-7">
                             `+data.rincian[i].tindakan+`
+                          </div>
+                          <div class="col-md-2">
+                          <button class='btn btn-danger btn-xs' onclick="hapusLab('`+data.rincian[i].no+`')"><i class="fa fa-trash "></i></button>
                           </div>
                           <div class="col-md-3">
                            Rp  `+data.rincian[i].harga+`
@@ -480,11 +606,11 @@ let faktur    = $('#nofaktur').val();
                       no++;
                 }
                 $('#rincianlabor').html(baris);
-                $('#detailsubhargalabor').text(data.subharga.harga);
+                $('#detailsubhargalabor').text("Rp "+data.subharga.harga);
                 totalHarga();
             }else{
-              $('tr').remove('#listlab');
-              $('#detailsubhargatindakan').text("0");
+              $('#rincianlabor').html('');
+              $('#detailsubhargalabor').text("Rp 0");
               totalHarga();
             } 
         }
@@ -541,6 +667,36 @@ let faktur    = $('#nofaktur').val();
     })  
   }
 
+  function hapusKeluhan(kd){
+    $.ajax({
+      type     : 'POST',
+      data     : 'id='+kd+
+                 '&jenis=4',
+      url      : '<?= base_url()."listpasien/hapusRincian" ?>',
+      dataType : 'json',
+      success  : function(data){
+        if(data == 'success'){
+          getRincian(4);
+        }
+      }
+    })  
+  }
+
+  function hapusDiagnosa(kd){
+    $.ajax({
+      type     : 'POST',
+      data     : 'id='+kd+
+                 '&jenis=5',
+      url      : '<?= base_url()."listpasien/hapusRincian" ?>',
+      dataType : 'json',
+      success  : function(data){
+        if(data == 'success'){
+          getRincian(5);
+        }
+      }
+    })  
+  }
+
 
   function getHargaLab(){
     let kd_lab = $('#lab').val();
@@ -570,20 +726,7 @@ let faktur    = $('#nofaktur').val();
       });
   }
 
-  function getDiagnosa(){
-      let faktur = $('#nofaktur').val();
-      $.ajax({
-        type     : 'POST',
-        data     : 'faktur='+faktur,
-        url      : '<?= base_url()."listpasien/getDetailDiagnosa"?>',
-        dataType : 'json',
-        success  : function(data){
-          let kode=data[0].kd_diagnosa;
-          $('#d'+kode).attr('selected', '');
-        }
-      });
-    }
-
+ 
     
 
     function detailObat(){
@@ -619,11 +762,21 @@ let faktur    = $('#nofaktur').val();
   }
 
   function totalHarga(){
-    let obat = $('#detailsubhargaobat').text();
+    let obat  = $('#detailsubhargaobat').text();
+    obat = convertHarga(obat);
+    console.log("obat :"+ obat);
     let tindakan = $('#detailsubhargatindakan').text();
+    tindakan = convertHarga(tindakan);
     let lab = $('#detailsubhargalabor').text();
+    lab = convertHarga(lab);
     let total = parseInt(obat) + parseInt(tindakan) + parseInt(lab);
-    $('#txtTotal').val(total);
+    console.log(total);
+    $('#txtTotal').html("Rp "+total);
+  }
+
+  function convertHarga(harga){
+    let convert = harga.split(' ');
+    return convert[1];
   }
 
   function kembalian(){
@@ -641,7 +794,6 @@ let faktur    = $('#nofaktur').val();
 
   getNama();
   getHargaLab();
-  getDiagnosa();
   getHargaTindakan();
   detailObat();
 
