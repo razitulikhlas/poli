@@ -1,5 +1,4 @@
 <?php 
-
 class ListPasien extends CI_Controller
 {
 	public function index(){
@@ -10,9 +9,7 @@ class ListPasien extends CI_Controller
 		$this->load->view('waiting/v_view');
 		$this->load->view('templates/footer');
 	}
-
 	public function Detail($faktur){
-
 		$data = [
 			"keluhan"   	=> $this->keluhan_model->getAll(),
 			"diagnosa"  	=> $this->diagnosa_model->getRincian("tbl_diagnosa.nama_diagnosa,detail_diagnosa.no",'detail_diagnosa.kd_diagnosa=tbl_diagnosa.no',$faktur),
@@ -31,15 +28,12 @@ class ListPasien extends CI_Controller
 		$this->load->view('waiting/v_rincian',$data);
 		$this->load->view('templates/footer');
 	}
-
 	public function getData(){
 		$data = [
 			"pasien" => $this->pendaftaran_model->detailPendaftaran()->result()
 		];
-
 		echo json_encode($data);
 	}
-
 	public function tambah($kodejadwal,$kd_dokter,$kd_pasien){
 		// $detail_medik 	 = array('no_faktur' => $nofaktur);
 		// $detail_diagnosa = array('no_faktur' => $nofaktur);
@@ -47,7 +41,6 @@ class ListPasien extends CI_Controller
 		// "rekam_medik" => $this->rekammedis_model->detailMedik($detail_medik,'rekam_medik')->row(),
 		
 		// ];
-
 		$where = array( 'kd_pasien' => $kd_pasien);
 		$data = [
 			"pasien"     => $this->pasien_model->getWhere($where),
@@ -57,7 +50,8 @@ class ListPasien extends CI_Controller
 			"obat"		 => $this->obat_model->getAll(),
 			"tindakan"   => $this->tindakan_model->getAll(),
 			"karyawan"   => $this->karyawan_model->getAll(),
-			"lab"		 => $this->labor_model->getAll()
+			"lab"		 => $this->labor_model->getAll(),
+			"dokter"     => $kd_dokter
 		];
  		$this->load->model('pendaftaran_model');
 		$this->load->view('templates/header');
@@ -65,12 +59,10 @@ class ListPasien extends CI_Controller
 		$this->load->view('waiting/v_diagnosa',$data);
 		$this->load->view('templates/footer');
 	}
-
-
 	public function simpanData(){
-		$faktur  = $this->input->post('faktur');
-		$total   = $this->input->post('total');
-
+		$faktur    = $this->input->post('faktur');
+		$total     = $this->input->post('total');
+		$kd_dokter = $this->input->post('kd_dokter');
 		$data = array( 
 				'no_faktur'   => $faktur,
 				'total_harga' => $total
@@ -82,17 +74,16 @@ class ListPasien extends CI_Controller
 		$dataupdate = array(
 			"status" => 1
 		);
-		 $result  = $this->save('tbl_transaksi',$data);
-		 $this->pendaftaran_model->update($dataupdate,$where);
+
+		$result  = $this->save('tbl_transaksi',$data);//save data
+		$this->pendaftaran_model->update($dataupdate,$where);//update status transaksi
+		$this->insertRiwayat($kd_dokter,$faktur);
 		echo json_encode($result);
-
 	}
-
 
 
 	public function saveRincian(){
 		$kd_rincian = $this->input->post('kd_rincian');
-
 		if($kd_rincian == 1){ //kd rincian 1 untuk menyimpan detail_obat 
 			$kode_obat = $this->input->post('kd_obat');
 			$subharga  = $this->input->post('subharga');
@@ -105,67 +96,66 @@ class ListPasien extends CI_Controller
 				'jumlah'    => $jumlah,
 				'sub_total' => $subharga,
 			);	
-
 			$result  = $this->save('detail_obat',$data);
 		}else if($kd_rincian == 2){ //kd rincian 2 untuk menyimpan detail_tindakan
-			$faktur = $this->input->post('faktur');
+			$faktur      = $this->input->post('faktur');
 			$kd_tindakan = $this->input->post('kd_tindakan');
 			$kd_karyawan = $this->input->post('kd_karyawan');
-			$harga = $this->input->post('harga');
-
+			$harga       = $this->input->post('harga');
+			$feedokter   = $this->input->post('feedokter');
+			$feekaryawan = $this->input->post('feekaryawan');
+			
 			$data = array(
 				"no_faktur"   => $faktur,
 				"kd_tindakan" => $kd_tindakan,
 				"kd_karyawan" => $kd_karyawan,
-				"harga" => $harga
+				"harga"       => $harga,
+				"fee_dokter"  => $feedokter,
+				"fee_karywan"=> $feekaryawan,
+
 			);
-
 			$result  = $this->save('detail_tindakan',$data);
-
 		}else if($kd_rincian == 3){ //kd rincian 3 untuk menyimpan detail_lab
 			$faktur = $this->input->post('faktur');
 			$kd_labor = $this->input->post('kd_labor');
 			$kd_karyawan = $this->input->post('kd_karyawan');
 			$harga = $this->input->post('harga');
-
+			$feedokter   = $this->input->post('feedokter');
+			$feekaryawan = $this->input->post('feekaryawan');
 			$data = array(
 				"no_faktur"   => $faktur,
 				"kd_labor"    => $kd_labor,
 				"kd_karyawan" => $kd_karyawan,
-				"harga" => $harga,
+				"harga"       => $harga,
+				"fee_dokter"  => $feedokter,
+				"fee_karywan" => $feekaryawan,
 			);
-
 			$result  = $this->save('detail_lab',$data);
-		}else if($kd_rincian == 4){ //kd rincian 2 untuk menyimpan detail_tindakan
+		}else if($kd_rincian == 4){ //kd rincian 4 untuk menyimpan keluhan
 			$faktur = $this->input->post('faktur');
 			$keluhan   = $this->input->post('keluhan');
-
 			$data = array(
 				"no_faktur" => $faktur,
 				"keluhan"   => $keluhan,
 			);
 			$result  = $this->save('detail_keluhan',$data);
-		}else if($kd_rincian == 5){ //kd rincian 2 untuk menyimpan detail_tindakan
+		}else if($kd_rincian == 5){ //kd rincian 5 untuk menyimpan diagnosa
 			$faktur   = $this->input->post('faktur');
 			$diagnosa = $this->input->post('diagnosa');
-
 			$data = array(
 				"no_faktur" => $faktur,
 				"kd_diagnosa"   => $diagnosa,
 			);
 			$result  = $this->save('detail_diagnosa',$data);
 		}
-
 		echo json_encode($result);
 		
 	}
-
 	public function pembayaran(){
 			$faktur = $this->input->post('faktur');
 			$total = $this->input->post('total');
 			$dibayar = $this->input->post('dibayar');
 			$kembalian = $this->input->post('kembalian');
-
 			$data = array(
 				"no_faktur"   => $faktur,
 				"total_harga" => $total,
@@ -180,7 +170,6 @@ class ListPasien extends CI_Controller
 			}
 		
 	}
-
 	public function save($table,$data){
 		$data = $this->obat_model->saveRincian($table,$data);
 		if($data > 0){
@@ -191,7 +180,6 @@ class ListPasien extends CI_Controller
 			// echo json_encode('gagal');
 		}
 	}
-
 	public function getRincian(){
 		$kd_rincian = $this->input->post('kd_rincian');
 		$faktur     = $this->input->post('faktur');
@@ -218,8 +206,9 @@ class ListPasien extends CI_Controller
 			];
 			
 		}else if($kd_rincian == 4){ //kd rincian 2 untuk mengambil detail_tindakan sesuai nofaktur
+			$where = array( 'no_faktur' => $faktur);
 			$result    = [
-				'keluhan' => $this->keluhan_model->getAll()
+				'keluhan' => $this->keluhan_model->getAllWhere($where)
 			];
 			
 		}else if($kd_rincian == 5){ //kd rincian 2 untuk mengambil detail_tindakan sesuai nofaktur
@@ -242,7 +231,6 @@ class ListPasien extends CI_Controller
 		}
 		echo json_encode($result);
 	}
-
 	public function rincianData($nofaktur){
 		$detail_medik 	 = array('no_faktur' => $nofaktur);
 		$detail_diagnosa = array('no_faktur' => $nofaktur);
@@ -254,7 +242,6 @@ class ListPasien extends CI_Controller
 		"karyawan"   => $this->karyawan_model->getAll(),
 		"lab"		 => $this->labor_model->getAll()
 		];
-
 		$this->load->model('pendaftaran_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
@@ -262,22 +249,18 @@ class ListPasien extends CI_Controller
 		$this->load->view('templates/footer');
 		
 	}
-
 	public function getDetailDiagnosa(){
 		$nofaktur = $this->input->post('faktur');
-
 		$where = array('no_faktur' => $nofaktur );
 		$data  = $this->diagnosa_model->getDetailWhere($where); 
 		echo json_encode($data);
 	}
-
 	public function getNama(){
 		$kd_dokter = $this->input->post('kd_dokter');
 		$kd_pasien = $this->input->post('kd_pasien');
 		$nama = $this->pendaftaran_model->getNama($kd_dokter,$kd_pasien);
 		echo json_encode($nama);
 	}
-
 	public function hapusRincian(){
 		$jenis = $this->input->post('jenis');
 		$id    = $this->input->post('id');
@@ -322,11 +305,11 @@ class ListPasien extends CI_Controller
 				echo json_encode('failed');
 			}
 		}
-
 	}
-
 	public function checkStatus(){
 		$data = $this->pendaftaran_model->checkStatus();
 		echo json_encode($data);
 	}
+
+
 }

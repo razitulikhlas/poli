@@ -45,7 +45,7 @@
                           <td><?= $row["tarif"] ?></td>
                           
                           <td>
-                           <a href="" class="btn btn-primary">Detai</a>
+                           <a href="<?= base_url()?>dokter/detail/<?=$row['kd_dokter']?>" class="btn btn-warning"><i class="fa fa-eye"></i></a>
                            <button type="button" onclick="submit(<?= $row['kd_dokter']?>)" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button>
                            <a href="<?= base_url()?>dokter/hapus/<?= $row['kd_dokter']?> " class="btn btn-danger tombol-hapus"><i class="fa fa-trash"></i></a>
                           </td>

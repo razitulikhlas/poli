@@ -278,7 +278,7 @@ ambilData();
                           <td>`+data[i].harga_jual+`</td>+
                           <td>`+data[i].tgl_masuk+`</td>+
                           <td>`+tgl+`</td>+
-                          <td><button type="button" onclick="submit('`+data[i].kd_obat+`')" class="btn btn-primary btnedit" data-toggle="modal" data-target=".bd-example-modal-xl">Edit</button><a href="<?= base_url()?>obat/hapus/`+data[i].kd_obat+` " class="btn btn-danger tombol-hapus"><i class="fa fa-trash"></i></a>
+                          <td><button type="button" onclick="submit('`+data[i].kd_obat+`')" class="btn btn-primary btnedit" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button><a href="<?= base_url()?>obat/hapus/`+data[i].kd_obat+` " class="btn btn-danger tombol-hapus"><i class="fa fa-trash"></i></a>
                        </tr>`;
                no++;
             }

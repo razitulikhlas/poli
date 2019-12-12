@@ -8,8 +8,7 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Data Pasien</h3>
                                     <div class="card-tools">
-                                    <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                        <i class="fas fa-minus"></i></button> -->
+                                    <input type="hidden" id="kodedokter" value="<?= $dokter ?>">
 
                                     </div>
                                 </div>
@@ -75,8 +74,12 @@
                 <div class="card-body mb-5">
                 <div class="form-group">
                           <input type="hidden" name="nofaktur"  class="form-control" id="nofaktur" value="<?= $kodepasien ?>">
-                           <input type="hidden" name="kdpasien"  class="form-control" id="kdpasien" value="<?= $detail->kd_pasien ?>">
-                            <input type="hidden" class="form-control" id="kddokter" name="kddokter" value="<?= $detail->kd_dokter; ?>">
+                          <input type="hidden" name="kdpasien"  class="form-control" id="kdpasien" value="<?= $detail->kd_pasien ?>">
+                          <input type="hidden" class="form-control" id="kddokter" name="kddokter" value="<?= $detail->kd_dokter; ?>">
+                          <input type="hidden" class="form-control" id="feedoktertindakan" name="feedoktertindakan">
+                          <input type="hidden" class="form-control" id="feekarywantindakan" name="feekarywantindakan">
+                          <input type="hidden" class="form-control" id="feedokterlab" name="feedokterlab">
+                          <input type="hidden" class="form-control" id="feekarywanlab" name="feekarywanlab">
                 </div>
                   <div class="row">
                     <div class="col-md-10">
@@ -308,11 +311,13 @@ let faktur    = $('#nofaktur').val();
   function simpanData(){
     let totalHarga = $("#txtTotal").text();
     totalHarga     = convertHarga(totalHarga);
+    let kd_dokter  = $("#kodedokter").val();
     console.log(totalHarga);
     $.ajax({
             type     : 'POST',
             data     :  'total='+totalHarga+
-                        '&faktur='+faktur,
+                        '&faktur='+faktur
+                        '&kd_dokter='+kd_dokter,
             url      : '<?= base_url()."listpasien/simpanData"?>',
             dataType : 'json',
             success  : function(hasil){
@@ -376,12 +381,16 @@ let faktur    = $('#nofaktur').val();
           let kd_tindakan   = $("[name='kd_tindakan']").val();
           let kd_krywntdkn  = $("[name='karyawan_tindakan']").val();
           let harga         = $("[name='hargatindakan']").val();
+          let feedokter     = $('#feedoktertindakan').val();
+          let feekaryawan   =$('#feekarywantindakan').val();
       
           $.ajax({
             type     : 'POST',
             data     :  'kd_tindakan='+kd_tindakan+
                         '&kd_rincian='+$rincian_kode+
                         '&harga='+harga+
+                        '&feedokter='+feedokter+
+                        '&feekaryawan='+feekaryawan+
                         '&kd_karyawan='+kd_krywntdkn+
                         '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/saveRincian"?>',
@@ -431,12 +440,16 @@ let faktur    = $('#nofaktur').val();
          let kd_tindakan = $("[name='kd_lab']").val();
          let kd_krywnlab = $("[name='karyawan_lab']").val();
          let harga       = $("[name='hargalab']").val();
+         let feedokter   = $('#feedokterlab').val();
+        let feekaryawan  = $('#feekarywanlab').val();
 
           $.ajax({
             type     : 'POST',
             data     :  'kd_labor='+kd_tindakan+
                         '&kd_rincian='+$rincian_kode+
                         '&harga='+harga+
+                        '&feedokter='+feedokter+
+                        '&feekaryawan='+feekaryawan+
                         '&kd_karyawan='+kd_krywnlab+
                         '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/saveRincian"?>',
@@ -453,8 +466,6 @@ let faktur    = $('#nofaktur').val();
   }
 
   
-
-
   function getRincian($kd_rincian){
     let faktur = $('#nofaktur').val();
     if($kd_rincian == 1){
@@ -707,6 +718,8 @@ let faktur    = $('#nofaktur').val();
       dataType : 'json',
       success  : function(data){
         $('#hargalab').val(data[0].harga);
+        $('#feedokterlab').val(data[0].fee_dokter);
+        $('#feekarywanlab').val(data[0].fee_karyawan);
       }
     })
   }
@@ -756,7 +769,10 @@ let faktur    = $('#nofaktur').val();
       url      : '<?= base_url()."tindakan/edit" ?>',
       dataType : 'json',
       success  : function(data){
+        console.log(data);
         $('#hargatindakan').val(data[0].harga);
+        $('#feedoktertindakan').val(data[0].fee_dokter);
+        $('#feekarywantindakan').val(data[0].fee_karyawan);
       }
     })
   }

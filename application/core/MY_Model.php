@@ -83,6 +83,7 @@ class MY_Model extends CI_Model {
         return $this->db->get()->row();
     }
 
+    
 
     public function getRincian($select,$join,$where){
         $this->db->select($select);

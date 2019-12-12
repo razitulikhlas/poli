@@ -2,10 +2,10 @@
 -- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 08, 2019 at 02:39 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.1.32
+-- Host: localhost
+-- Waktu pembuatan: 12 Des 2019 pada 03.06
+-- Versi server: 10.4.6-MariaDB
+-- Versi PHP: 7.1.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detail_diagnosa`
+-- Struktur dari tabel `detail_diagnosa`
 --
 
 CREATE TABLE `detail_diagnosa` (
@@ -36,18 +36,17 @@ CREATE TABLE `detail_diagnosa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `detail_diagnosa`
+-- Dumping data untuk tabel `detail_diagnosa`
 --
 
 INSERT INTO `detail_diagnosa` (`no`, `no_faktur`, `kd_diagnosa`, `created_at`) VALUES
-(85, '191205PJ28-001', 6, '2019-12-05 16:26:52'),
-(86, '191205PJ28-001', 7, '2019-12-05 16:26:56'),
-(87, '191206PJ28-001', 6, '2019-12-06 02:16:57');
+(94, '191209PJ28-001', 6, '2019-12-09 15:02:17'),
+(95, '191211PJ28-001', 6, '2019-12-11 05:51:29');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detail_keluhan`
+-- Struktur dari tabel `detail_keluhan`
 --
 
 CREATE TABLE `detail_keluhan` (
@@ -58,18 +57,17 @@ CREATE TABLE `detail_keluhan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `detail_keluhan`
+-- Dumping data untuk tabel `detail_keluhan`
 --
 
 INSERT INTO `detail_keluhan` (`no`, `no_faktur`, `keluhan`, `created_at`) VALUES
-(36, '191205PJ28-001', 'sakit kepala', '2019-12-05 16:26:40'),
-(37, '191205PJ28-001', 'Sakit Perut', '2019-12-05 16:26:48'),
-(38, '191206PJ28-001', 'sakit kepala', '2019-12-06 02:16:33');
+(42, '191211PJ28-001', 'Sakit Kepala', '2019-12-11 05:50:57'),
+(50, '191211PJ28-002', 'Sakit Kepala', '2019-12-11 06:02:19');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detail_lab`
+-- Struktur dari tabel `detail_lab`
 --
 
 CREATE TABLE `detail_lab` (
@@ -78,22 +76,22 @@ CREATE TABLE `detail_lab` (
   `kd_karyawan` bigint(20) NOT NULL,
   `kd_labor` bigint(20) NOT NULL,
   `harga` double NOT NULL,
+  `fee_karywan` double NOT NULL,
+  `fee_dokter` double NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `detail_lab`
+-- Dumping data untuk tabel `detail_lab`
 --
 
-INSERT INTO `detail_lab` (`no`, `no_faktur`, `kd_karyawan`, `kd_labor`, `harga`, `created_at`) VALUES
-(25, '191205PJ28-001', 12, 2, 30000, '2019-12-05 16:27:17'),
-(26, '191205PJ28-001', 12, 6, 27000, '2019-12-05 16:27:21'),
-(27, '191206PJ28-001', 12, 2, 30000, '2019-12-06 02:17:15');
+INSERT INTO `detail_lab` (`no`, `no_faktur`, `kd_karyawan`, `kd_labor`, `harga`, `fee_karywan`, `fee_dokter`, `created_at`) VALUES
+(37, '191209PJ28-002', 12, 2, 30000, 2000, 10000, '2019-12-09 16:03:44');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detail_obat`
+-- Struktur dari tabel `detail_obat`
 --
 
 CREATE TABLE `detail_obat` (
@@ -106,18 +104,17 @@ CREATE TABLE `detail_obat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `detail_obat`
+-- Dumping data untuk tabel `detail_obat`
 --
 
 INSERT INTO `detail_obat` (`no`, `no_faktur`, `kd_obat`, `jumlah`, `sub_total`, `created_at`) VALUES
-(254, '191205PJ28-001', 32, 2, 1500, '2019-12-05 16:26:59'),
-(255, '191205PJ28-001', 38, 2, 3000, '2019-12-05 16:27:05'),
-(256, '191206PJ28-001', 32, 5, 3750, '2019-12-06 02:17:04');
+(258, '191209PJ28-001', 32, 2, 1500, '2019-12-09 15:02:17'),
+(259, '191211PJ28-001', 32, 2, 1500, '2019-12-11 05:51:32');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detail_tindakan`
+-- Struktur dari tabel `detail_tindakan`
 --
 
 CREATE TABLE `detail_tindakan` (
@@ -126,34 +123,24 @@ CREATE TABLE `detail_tindakan` (
   `kd_tindakan` bigint(20) NOT NULL,
   `kd_karyawan` bigint(20) NOT NULL,
   `harga` double NOT NULL,
+  `fee_dokter` double NOT NULL,
+  `fee_karywan` double NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `detail_tindakan`
+-- Dumping data untuk tabel `detail_tindakan`
 --
 
-INSERT INTO `detail_tindakan` (`no`, `no_faktur`, `kd_tindakan`, `kd_karyawan`, `harga`, `created_at`) VALUES
-(52, '191205PJ28-001', 5, 12, 40000, '2019-12-05 16:27:11'),
-(53, '191205PJ28-001', 4, 12, 1000000, '2019-12-05 16:27:14');
+INSERT INTO `detail_tindakan` (`no`, `no_faktur`, `kd_tindakan`, `kd_karyawan`, `harga`, `fee_dokter`, `fee_karywan`, `created_at`) VALUES
+(57, '191209PJ28-002', 4, 12, 1000000, 5000000, 5000, '2019-12-09 16:00:37'),
+(58, '191209PJ28-002', 5, 12, 40000, 5000, 2000, '2019-12-09 16:00:41'),
+(59, '191211PJ28-001', 4, 12, 1000000, 5000000, 5000, '2019-12-11 05:51:33');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gaji_dokter`
---
-
-CREATE TABLE `gaji_dokter` (
-  `id` bigint(20) NOT NULL,
-  `kd_dokter` bigint(20) NOT NULL,
-  `pendapatan` varchar(30) NOT NULL,
-  `bulan` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `laboratorium`
+-- Struktur dari tabel `laboratorium`
 --
 
 CREATE TABLE `laboratorium` (
@@ -166,7 +153,7 @@ CREATE TABLE `laboratorium` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `laboratorium`
+-- Dumping data untuk tabel `laboratorium`
 --
 
 INSERT INTO `laboratorium` (`no`, `tindakan`, `fee_dokter`, `fee_karyawan`, `harga`, `deskripsi`) VALUES
@@ -176,7 +163,7 @@ INSERT INTO `laboratorium` (`no`, `tindakan`, `fee_dokter`, `fee_karyawan`, `har
 -- --------------------------------------------------------
 
 --
--- Table structure for table `level`
+-- Struktur dari tabel `level`
 --
 
 CREATE TABLE `level` (
@@ -185,7 +172,7 @@ CREATE TABLE `level` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `level`
+-- Dumping data untuk tabel `level`
 --
 
 INSERT INTO `level` (`id`, `level`) VALUES
@@ -196,7 +183,28 @@ INSERT INTO `level` (`id`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pasien`
+-- Struktur dari tabel `log_gaji`
+--
+
+CREATE TABLE `log_gaji` (
+  `id` bigint(20) NOT NULL,
+  `kd_dokter` bigint(20) NOT NULL,
+  `gaji` double NOT NULL,
+  `keterangan` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `log_gaji`
+--
+
+INSERT INTO `log_gaji` (`id`, `kd_dokter`, `gaji`, `keterangan`, `created_at`) VALUES
+(1, 30, 500000, 'Absensi', '2019-12-11 05:16:28');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pasien`
 --
 
 CREATE TABLE `pasien` (
@@ -216,7 +224,7 @@ CREATE TABLE `pasien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `pasien`
+-- Dumping data untuk tabel `pasien`
 --
 
 INSERT INTO `pasien` (`kd_pasien`, `nama`, `jenis_kelamin`, `tempat_lahir`, `tgl_lahir`, `alamat`, `provinsi`, `kota`, `kecamatan`, `kelurahan`, `nama_ibu`, `nohp`, `created_at`) VALUES
@@ -227,7 +235,7 @@ INSERT INTO `pasien` (`kd_pasien`, `nama`, `jenis_kelamin`, `tempat_lahir`, `tgl
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_absensi`
+-- Struktur dari tabel `tbl_absensi`
 --
 
 CREATE TABLE `tbl_absensi` (
@@ -238,52 +246,64 @@ CREATE TABLE `tbl_absensi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_absensi`
+-- Dumping data untuk tabel `tbl_absensi`
 --
 
 INSERT INTO `tbl_absensi` (`kd_absensi`, `kd_dokter`, `waktu`, `tarif`) VALUES
-(191112, 26, '2019-11-12 04:44:29', 100000),
-(191112, 27, '2019-11-12 09:51:03', 30000),
-(191112, 30, '2019-11-12 07:21:45', 500000),
-(191113, 27, '2019-11-13 10:40:22', 30000),
-(191115, 30, '2019-11-15 02:13:06', 500000),
-(191116, 30, '2019-11-16 05:08:41', 500000),
-(191124, 30, '2019-11-24 00:16:41', 500000),
-(191129, 30, '2019-11-29 02:12:34', 500000),
-(191205, 30, '2019-12-05 15:29:56', 500000),
-(191206, 30, '2019-12-06 02:20:45', 500000);
+(191211, 30, '2019-12-11 05:16:28', 500000);
+
+--
+-- Trigger `tbl_absensi`
+--
+DELIMITER $$
+CREATE TRIGGER `absensigaji` AFTER INSERT ON `tbl_absensi` FOR EACH ROW BEGIN
+    update tbl_dokter
+    set gaji = gaji+new.tarif
+    WHERE
+    kd_dokter =new.kd_dokter; 
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `absensigajidokter` AFTER INSERT ON `tbl_absensi` FOR EACH ROW BEGIN
+    INSERT into log_gaji (kd_dokter,gaji,keterangan) VALUES (new.kd_dokter,new.tarif,"Absensi");
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_diagnosa`
+-- Struktur dari tabel `tbl_diagnosa`
 --
 
 CREATE TABLE `tbl_diagnosa` (
   `no` bigint(20) NOT NULL,
   `nama_diagnosa` varchar(220) NOT NULL,
-  `deskripsi` varchar(220) NOT NULL
+  `deskripsi` varchar(220) NOT NULL,
+  `kd_dokter` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_diagnosa`
+-- Dumping data untuk tabel `tbl_diagnosa`
 --
 
-INSERT INTO `tbl_diagnosa` (`no`, `nama_diagnosa`, `deskripsi`) VALUES
-(5, 'Asma', 'disebabkan oleh debu'),
-(6, 'flu', 'harus di jaga makan dan kondisi badan'),
-(7, 'Demam berdarah', 'demam tinggi'),
-(8, 'Sakit kaki', 'terkilir');
+INSERT INTO `tbl_diagnosa` (`no`, `nama_diagnosa`, `deskripsi`, `kd_dokter`) VALUES
+(5, 'Asma', 'disebabkan oleh debu', 27),
+(6, 'flu', 'harus di jaga makan dan kondisi badan', 27),
+(7, 'Demam berdarah', 'demam tinggi', 0),
+(8, 'Sakit kaki', 'terkilir', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_dokter`
+-- Struktur dari tabel `tbl_dokter`
 --
 
 CREATE TABLE `tbl_dokter` (
   `kd_dokter` bigint(11) NOT NULL,
   `nama` varchar(30) NOT NULL,
+  `gaji` double NOT NULL,
   `jenis_kelamin` varchar(15) NOT NULL,
   `nohp` varchar(15) NOT NULL,
   `noizin` varchar(15) NOT NULL,
@@ -297,36 +317,23 @@ CREATE TABLE `tbl_dokter` (
   `spesialis` varchar(12) NOT NULL,
   `email` varchar(40) NOT NULL,
   `password` text NOT NULL,
-  `photo` varchar(40) NOT NULL
+  `photo` varchar(40) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_dokter`
+-- Dumping data untuk tabel `tbl_dokter`
 --
 
-INSERT INTO `tbl_dokter` (`kd_dokter`, `nama`, `jenis_kelamin`, `nohp`, `noizin`, `alamat`, `provinsi`, `kota`, `kecamatan`, `kelurahan`, `tampat_lahir`, `tanggal_lahir`, `spesialis`, `email`, `password`, `photo`) VALUES
-(27, 'Iqbal', 'pria', '082169146904', '1711082035', 'sdsa', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-12', 'PM', 'iqbal@gmail.com', '123', 'AdminLTELogo.png'),
-(28, 'Rizkhan Hadi', 'pria', '082169146904', '1711082039', 'jalan taruko no 2', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-05', 'PJ', 'rizkhanhadi@gmail.com', '123', 'avatar.png'),
-(30, 'Elang Abdul Azis', 'pria', '082169146904', '1711082036', 'Jalan Padang 4 no 424 Siteba', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '1997-11-04', 'PJ', 'razituli@gmail.com', '123', 'avatar5.png');
+INSERT INTO `tbl_dokter` (`kd_dokter`, `nama`, `gaji`, `jenis_kelamin`, `nohp`, `noizin`, `alamat`, `provinsi`, `kota`, `kecamatan`, `kelurahan`, `tampat_lahir`, `tanggal_lahir`, `spesialis`, `email`, `password`, `photo`, `created_at`) VALUES
+(27, 'Iqbal', 0, 'pria', '082169146904', '1711082035', 'sdsa', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-12', 'PM', 'iqbal@gmail.com', '123', 'AdminLTELogo.png', '2019-12-09 12:57:19'),
+(28, 'Rizkhan Hadi', 0, 'pria', '082169146904', '1711082039', 'jalan taruko no 2', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-05', 'PJ', 'rizkhanhadi@gmail.com', '123', 'avatar.png', '2019-12-09 12:57:19'),
+(30, 'Elang Abdul Azis', 500000, 'pria', '082169146904', '1711082036', 'Jalan Padang 4 no 424 Siteba', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '1997-11-04', 'PJ', 'razituli@gmail.com', '123', 'avatar5.png', '2019-12-11 05:16:28');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_gaji`
---
-
-CREATE TABLE `tbl_gaji` (
-  `no` bigint(20) NOT NULL,
-  `kd_dokter` bigint(20) NOT NULL,
-  `kd_spesialis` varchar(15) NOT NULL,
-  `gaji_pokok` double NOT NULL,
-  `tarif` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_jadwal`
+-- Struktur dari tabel `tbl_jadwal`
 --
 
 CREATE TABLE `tbl_jadwal` (
@@ -341,17 +348,17 @@ CREATE TABLE `tbl_jadwal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_jadwal`
+-- Dumping data untuk tabel `tbl_jadwal`
 --
 
 INSERT INTO `tbl_jadwal` (`kd_jadwal`, `kd_poli`, `kd_dokter`, `waktu`, `tanggal`, `status`, `Keterangan`, `created_at`) VALUES
-(33, 'PJ', 28, '3:24 PM', '2019-12-06', 'TERSEDIA', '1 jam sebelum berobat check darah', '2019-12-06 01:43:21'),
-(34, 'PM', 27, '9:30 PM', '2019-12-06', 'TERSEDIA', '1 jam sebelum berobat check darah', '2019-12-06 02:15:26');
+(35, 'PJ', 28, '10:09 PM', '2019-12-11', 'tersedia', '1 jam sebelum berobat periksa darah', '2019-12-11 05:50:15'),
+(36, 'PJ', 30, '10:09 PM', '2019-12-11', 'tersedia', '', '2019-12-11 07:14:53');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_karyawan`
+-- Struktur dari tabel `tbl_karyawan`
 --
 
 CREATE TABLE `tbl_karyawan` (
@@ -364,7 +371,7 @@ CREATE TABLE `tbl_karyawan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_karyawan`
+-- Dumping data untuk tabel `tbl_karyawan`
 --
 
 INSERT INTO `tbl_karyawan` (`no`, `nama`, `jenis_kelamin`, `tanggal_lahir`, `no_hp`, `alamat`) VALUES
@@ -373,7 +380,7 @@ INSERT INTO `tbl_karyawan` (`no`, `nama`, `jenis_kelamin`, `tanggal_lahir`, `no_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_obat`
+-- Struktur dari tabel `tbl_obat`
 --
 
 CREATE TABLE `tbl_obat` (
@@ -394,17 +401,17 @@ CREATE TABLE `tbl_obat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_obat`
+-- Dumping data untuk tabel `tbl_obat`
 --
 
 INSERT INTO `tbl_obat` (`kd_obat`, `nama_obat`, `miligram`, `jenis_obat`, `unit`, `jumlah_unit`, `jumla_obat_unit`, `total_obat`, `harga_beli`, `harga_modal`, `harga_jual`, `tgl_masuk`, `expired`, `created_at`) VALUES
 (32, 'paramex', 50, 'Tablet', 'box', 50, 10, 500, 5000, 500, 750, '2019-11-11', '2020-12-07', '2019-12-05 06:49:25'),
-(38, 'Procold', 50, 'Tablet', 'box', 50, 10, 0, 10000, 1000, 1500, '2019-12-01', '2019-12-05', '2019-12-06 01:55:41');
+(38, 'Procold', 50, 'Tablet', 'box', 50, 10, 0, 10000, 1000, 1500, '2019-12-01', '2019-02-10', '2019-12-11 05:03:02');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_pendaftaran`
+-- Struktur dari tabel `tbl_pendaftaran`
 --
 
 CREATE TABLE `tbl_pendaftaran` (
@@ -417,17 +424,20 @@ CREATE TABLE `tbl_pendaftaran` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_pendaftaran`
+-- Dumping data untuk tabel `tbl_pendaftaran`
 --
 
 INSERT INTO `tbl_pendaftaran` (`no_pendaftaran`, `kd_pasien`, `kd_poli`, `kd_jadwal`, `status`, `created_at`) VALUES
-('191205PJ28-001', 7, 'PJ', 33, 1, '2019-12-05 16:27:23'),
-('191206PJ28-001', 7, 'PJ', 33, 1, '2019-12-06 02:17:17');
+('191209PJ28-001', 8, 'PJ', 35, 1, '2019-12-09 15:02:28'),
+('191209PJ28-002', 7, 'PJ', 35, 0, '2019-12-09 15:07:27'),
+('191211PJ28-001', 7, 'PJ', 35, 1, '2019-12-11 05:51:35'),
+('191211PJ28-002', 8, 'PJ', 35, 0, '2019-12-11 05:52:40'),
+('191211PJ30-001', 8, 'PJ', 36, 0, '2019-12-11 07:15:03');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_spesialis`
+-- Struktur dari tabel `tbl_spesialis`
 --
 
 CREATE TABLE `tbl_spesialis` (
@@ -438,7 +448,7 @@ CREATE TABLE `tbl_spesialis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_spesialis`
+-- Dumping data untuk tabel `tbl_spesialis`
 --
 
 INSERT INTO `tbl_spesialis` (`kd_spesialis`, `nama`, `tarif`, `keterangan`) VALUES
@@ -449,7 +459,7 @@ INSERT INTO `tbl_spesialis` (`kd_spesialis`, `nama`, `tarif`, `keterangan`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_tindakan`
+-- Struktur dari tabel `tbl_tindakan`
 --
 
 CREATE TABLE `tbl_tindakan` (
@@ -462,7 +472,7 @@ CREATE TABLE `tbl_tindakan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_tindakan`
+-- Dumping data untuk tabel `tbl_tindakan`
 --
 
 INSERT INTO `tbl_tindakan` (`no`, `tindakan`, `fee_dokter`, `fee_karyawan`, `harga`, `deskripsi`) VALUES
@@ -473,7 +483,7 @@ INSERT INTO `tbl_tindakan` (`no`, `tindakan`, `fee_dokter`, `fee_karyawan`, `har
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_transaksi`
+-- Struktur dari tabel `tbl_transaksi`
 --
 
 CREATE TABLE `tbl_transaksi` (
@@ -486,17 +496,17 @@ CREATE TABLE `tbl_transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_transaksi`
+-- Dumping data untuk tabel `tbl_transaksi`
 --
 
 INSERT INTO `tbl_transaksi` (`no_faktur`, `total_harga`, `dibayar`, `kembalian`, `pelayan`, `created_at`) VALUES
-('191205PJ28-001', 1101500, 1120000, 18500, 'Fikri', '2019-12-06 01:40:06'),
-('191206PJ28-001', 33750, 35000, 1250, 'Fikri', '2019-12-06 02:18:14');
+('191209PJ28-001', 68500, 70000, 1500, 'Fikri', '2019-12-09 15:02:53'),
+('191211PJ28-001', 1001500, 1002000, 500, 'Fikri', '2019-12-11 05:52:16');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -511,7 +521,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `image`, `password`, `level`, `us_active`, `date`) VALUES
@@ -522,7 +532,7 @@ INSERT INTO `user` (`id`, `nama`, `email`, `image`, `password`, `level`, `us_act
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_access_menu`
+-- Struktur dari tabel `user_access_menu`
 --
 
 CREATE TABLE `user_access_menu` (
@@ -532,7 +542,7 @@ CREATE TABLE `user_access_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_access_menu`
+-- Dumping data untuk tabel `user_access_menu`
 --
 
 INSERT INTO `user_access_menu` (`id`, `level_id`, `menu_id`) VALUES
@@ -545,7 +555,7 @@ INSERT INTO `user_access_menu` (`id`, `level_id`, `menu_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_menu`
+-- Struktur dari tabel `user_menu`
 --
 
 CREATE TABLE `user_menu` (
@@ -554,7 +564,7 @@ CREATE TABLE `user_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_menu`
+-- Dumping data untuk tabel `user_menu`
 --
 
 INSERT INTO `user_menu` (`id`, `menu`) VALUES
@@ -565,7 +575,7 @@ INSERT INTO `user_menu` (`id`, `menu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_sub_menu`
+-- Struktur dari tabel `user_sub_menu`
 --
 
 CREATE TABLE `user_sub_menu` (
@@ -578,7 +588,7 @@ CREATE TABLE `user_sub_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_sub_menu`
+-- Dumping data untuk tabel `user_sub_menu`
 --
 
 INSERT INTO `user_sub_menu` (`id`, `menu_id`, `judul`, `url`, `icon`, `is_active`) VALUES
@@ -602,7 +612,7 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `judul`, `url`, `icon`, `is_active
 --
 
 --
--- Indexes for table `detail_diagnosa`
+-- Indeks untuk tabel `detail_diagnosa`
 --
 ALTER TABLE `detail_diagnosa`
   ADD PRIMARY KEY (`no`),
@@ -610,14 +620,14 @@ ALTER TABLE `detail_diagnosa`
   ADD KEY `detail_diagnosa_ibfk_2` (`kd_diagnosa`);
 
 --
--- Indexes for table `detail_keluhan`
+-- Indeks untuk tabel `detail_keluhan`
 --
 ALTER TABLE `detail_keluhan`
   ADD PRIMARY KEY (`no`),
   ADD KEY `no_faktur` (`no_faktur`);
 
 --
--- Indexes for table `detail_lab`
+-- Indeks untuk tabel `detail_lab`
 --
 ALTER TABLE `detail_lab`
   ADD PRIMARY KEY (`no`),
@@ -626,7 +636,7 @@ ALTER TABLE `detail_lab`
   ADD KEY `no_faktur` (`no_faktur`);
 
 --
--- Indexes for table `detail_obat`
+-- Indeks untuk tabel `detail_obat`
 --
 ALTER TABLE `detail_obat`
   ADD PRIMARY KEY (`no`),
@@ -634,7 +644,7 @@ ALTER TABLE `detail_obat`
   ADD KEY `no_faktur` (`no_faktur`);
 
 --
--- Indexes for table `detail_tindakan`
+-- Indeks untuk tabel `detail_tindakan`
 --
 ALTER TABLE `detail_tindakan`
   ADD PRIMARY KEY (`no`),
@@ -643,44 +653,44 @@ ALTER TABLE `detail_tindakan`
   ADD KEY `no_faktur` (`no_faktur`);
 
 --
--- Indexes for table `gaji_dokter`
---
-ALTER TABLE `gaji_dokter`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `laboratorium`
+-- Indeks untuk tabel `laboratorium`
 --
 ALTER TABLE `laboratorium`
   ADD PRIMARY KEY (`no`);
 
 --
--- Indexes for table `level`
+-- Indeks untuk tabel `level`
 --
 ALTER TABLE `level`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pasien`
+-- Indeks untuk tabel `log_gaji`
+--
+ALTER TABLE `log_gaji`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `pasien`
 --
 ALTER TABLE `pasien`
   ADD PRIMARY KEY (`kd_pasien`);
 
 --
--- Indexes for table `tbl_absensi`
+-- Indeks untuk tabel `tbl_absensi`
 --
 ALTER TABLE `tbl_absensi`
   ADD PRIMARY KEY (`kd_absensi`,`kd_dokter`),
   ADD KEY `kd_dokter` (`kd_dokter`);
 
 --
--- Indexes for table `tbl_diagnosa`
+-- Indeks untuk tabel `tbl_diagnosa`
 --
 ALTER TABLE `tbl_diagnosa`
   ADD PRIMARY KEY (`no`);
 
 --
--- Indexes for table `tbl_dokter`
+-- Indeks untuk tabel `tbl_dokter`
 --
 ALTER TABLE `tbl_dokter`
   ADD PRIMARY KEY (`kd_dokter`),
@@ -689,13 +699,7 @@ ALTER TABLE `tbl_dokter`
   ADD KEY `spesialis` (`spesialis`);
 
 --
--- Indexes for table `tbl_gaji`
---
-ALTER TABLE `tbl_gaji`
-  ADD PRIMARY KEY (`no`);
-
---
--- Indexes for table `tbl_jadwal`
+-- Indeks untuk tabel `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
   ADD PRIMARY KEY (`kd_jadwal`),
@@ -703,19 +707,19 @@ ALTER TABLE `tbl_jadwal`
   ADD KEY `kd_dokter` (`kd_dokter`);
 
 --
--- Indexes for table `tbl_karyawan`
+-- Indeks untuk tabel `tbl_karyawan`
 --
 ALTER TABLE `tbl_karyawan`
   ADD PRIMARY KEY (`no`);
 
 --
--- Indexes for table `tbl_obat`
+-- Indeks untuk tabel `tbl_obat`
 --
 ALTER TABLE `tbl_obat`
   ADD PRIMARY KEY (`kd_obat`);
 
 --
--- Indexes for table `tbl_pendaftaran`
+-- Indeks untuk tabel `tbl_pendaftaran`
 --
 ALTER TABLE `tbl_pendaftaran`
   ADD PRIMARY KEY (`no_pendaftaran`,`kd_jadwal`),
@@ -724,31 +728,31 @@ ALTER TABLE `tbl_pendaftaran`
   ADD KEY `kd_jadwal` (`kd_jadwal`);
 
 --
--- Indexes for table `tbl_spesialis`
+-- Indeks untuk tabel `tbl_spesialis`
 --
 ALTER TABLE `tbl_spesialis`
   ADD PRIMARY KEY (`kd_spesialis`);
 
 --
--- Indexes for table `tbl_tindakan`
+-- Indeks untuk tabel `tbl_tindakan`
 --
 ALTER TABLE `tbl_tindakan`
   ADD PRIMARY KEY (`no`);
 
 --
--- Indexes for table `tbl_transaksi`
+-- Indeks untuk tabel `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
   ADD PRIMARY KEY (`no_faktur`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_access_menu`
+-- Indeks untuk tabel `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
   ADD PRIMARY KEY (`id`),
@@ -756,155 +760,161 @@ ALTER TABLE `user_access_menu`
   ADD KEY `menu_id` (`menu_id`);
 
 --
--- Indexes for table `user_menu`
+-- Indeks untuk tabel `user_menu`
 --
 ALTER TABLE `user_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_sub_menu`
+-- Indeks untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
   ADD PRIMARY KEY (`id`),
   ADD KEY `menu_id` (`menu_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `detail_diagnosa`
+-- AUTO_INCREMENT untuk tabel `detail_diagnosa`
 --
 ALTER TABLE `detail_diagnosa`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
--- AUTO_INCREMENT for table `detail_keluhan`
+-- AUTO_INCREMENT untuk tabel `detail_keluhan`
 --
 ALTER TABLE `detail_keluhan`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT for table `detail_lab`
+-- AUTO_INCREMENT untuk tabel `detail_lab`
 --
 ALTER TABLE `detail_lab`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
--- AUTO_INCREMENT for table `detail_obat`
+-- AUTO_INCREMENT untuk tabel `detail_obat`
 --
 ALTER TABLE `detail_obat`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=257;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
 
 --
--- AUTO_INCREMENT for table `detail_tindakan`
+-- AUTO_INCREMENT untuk tabel `detail_tindakan`
 --
 ALTER TABLE `detail_tindakan`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
--- AUTO_INCREMENT for table `laboratorium`
+-- AUTO_INCREMENT untuk tabel `laboratorium`
 --
 ALTER TABLE `laboratorium`
   MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `level`
+-- AUTO_INCREMENT untuk tabel `level`
 --
 ALTER TABLE `level`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `pasien`
+-- AUTO_INCREMENT untuk tabel `log_gaji`
+--
+ALTER TABLE `log_gaji`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `pasien`
 --
 ALTER TABLE `pasien`
   MODIFY `kd_pasien` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `tbl_absensi`
+-- AUTO_INCREMENT untuk tabel `tbl_absensi`
 --
 ALTER TABLE `tbl_absensi`
-  MODIFY `kd_absensi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191207;
+  MODIFY `kd_absensi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191212;
 
 --
--- AUTO_INCREMENT for table `tbl_diagnosa`
+-- AUTO_INCREMENT untuk tabel `tbl_diagnosa`
 --
 ALTER TABLE `tbl_diagnosa`
   MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `tbl_dokter`
+-- AUTO_INCREMENT untuk tabel `tbl_dokter`
 --
 ALTER TABLE `tbl_dokter`
   MODIFY `kd_dokter` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `tbl_jadwal`
+-- AUTO_INCREMENT untuk tabel `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
-  MODIFY `kd_jadwal` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `kd_jadwal` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT for table `tbl_karyawan`
+-- AUTO_INCREMENT untuk tabel `tbl_karyawan`
 --
 ALTER TABLE `tbl_karyawan`
   MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `tbl_obat`
+-- AUTO_INCREMENT untuk tabel `tbl_obat`
 --
 ALTER TABLE `tbl_obat`
   MODIFY `kd_obat` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
--- AUTO_INCREMENT for table `tbl_tindakan`
+-- AUTO_INCREMENT untuk tabel `tbl_tindakan`
 --
 ALTER TABLE `tbl_tindakan`
   MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `user_access_menu`
+-- AUTO_INCREMENT untuk tabel `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `user_menu`
+-- AUTO_INCREMENT untuk tabel `user_menu`
 --
 ALTER TABLE `user_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `user_sub_menu`
+-- AUTO_INCREMENT untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `detail_diagnosa`
+-- Ketidakleluasaan untuk tabel `detail_diagnosa`
 --
 ALTER TABLE `detail_diagnosa`
   ADD CONSTRAINT `detail_diagnosa_ibfk_1` FOREIGN KEY (`no_faktur`) REFERENCES `tbl_pendaftaran` (`no_pendaftaran`),
   ADD CONSTRAINT `detail_diagnosa_ibfk_2` FOREIGN KEY (`kd_diagnosa`) REFERENCES `tbl_diagnosa` (`no`);
 
 --
--- Constraints for table `detail_keluhan`
+-- Ketidakleluasaan untuk tabel `detail_keluhan`
 --
 ALTER TABLE `detail_keluhan`
   ADD CONSTRAINT `detail_keluhan_ibfk_1` FOREIGN KEY (`no_faktur`) REFERENCES `tbl_pendaftaran` (`no_pendaftaran`);
 
 --
--- Constraints for table `detail_lab`
+-- Ketidakleluasaan untuk tabel `detail_lab`
 --
 ALTER TABLE `detail_lab`
   ADD CONSTRAINT `detail_lab_ibfk_1` FOREIGN KEY (`kd_karyawan`) REFERENCES `tbl_karyawan` (`no`),
@@ -912,14 +922,14 @@ ALTER TABLE `detail_lab`
   ADD CONSTRAINT `detail_lab_ibfk_3` FOREIGN KEY (`no_faktur`) REFERENCES `tbl_pendaftaran` (`no_pendaftaran`);
 
 --
--- Constraints for table `detail_obat`
+-- Ketidakleluasaan untuk tabel `detail_obat`
 --
 ALTER TABLE `detail_obat`
   ADD CONSTRAINT `detail_obat_ibfk_1` FOREIGN KEY (`kd_obat`) REFERENCES `tbl_obat` (`kd_obat`),
   ADD CONSTRAINT `detail_obat_ibfk_2` FOREIGN KEY (`no_faktur`) REFERENCES `tbl_pendaftaran` (`no_pendaftaran`);
 
 --
--- Constraints for table `detail_tindakan`
+-- Ketidakleluasaan untuk tabel `detail_tindakan`
 --
 ALTER TABLE `detail_tindakan`
   ADD CONSTRAINT `detail_tindakan_ibfk_2` FOREIGN KEY (`kd_karyawan`) REFERENCES `tbl_karyawan` (`no`),
@@ -927,20 +937,20 @@ ALTER TABLE `detail_tindakan`
   ADD CONSTRAINT `detail_tindakan_ibfk_4` FOREIGN KEY (`no_faktur`) REFERENCES `tbl_pendaftaran` (`no_pendaftaran`);
 
 --
--- Constraints for table `tbl_dokter`
+-- Ketidakleluasaan untuk tabel `tbl_dokter`
 --
 ALTER TABLE `tbl_dokter`
   ADD CONSTRAINT `tbl_dokter_ibfk_1` FOREIGN KEY (`spesialis`) REFERENCES `tbl_spesialis` (`kd_spesialis`);
 
 --
--- Constraints for table `tbl_jadwal`
+-- Ketidakleluasaan untuk tabel `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
   ADD CONSTRAINT `tbl_jadwal_ibfk_1` FOREIGN KEY (`kd_poli`) REFERENCES `tbl_spesialis` (`kd_spesialis`),
   ADD CONSTRAINT `tbl_jadwal_ibfk_2` FOREIGN KEY (`kd_dokter`) REFERENCES `tbl_dokter` (`kd_dokter`);
 
 --
--- Constraints for table `tbl_pendaftaran`
+-- Ketidakleluasaan untuk tabel `tbl_pendaftaran`
 --
 ALTER TABLE `tbl_pendaftaran`
   ADD CONSTRAINT `tbl_pendaftaran_ibfk_1` FOREIGN KEY (`kd_pasien`) REFERENCES `pasien` (`kd_pasien`),
@@ -948,14 +958,14 @@ ALTER TABLE `tbl_pendaftaran`
   ADD CONSTRAINT `tbl_pendaftaran_ibfk_3` FOREIGN KEY (`kd_jadwal`) REFERENCES `tbl_jadwal` (`kd_jadwal`);
 
 --
--- Constraints for table `user_access_menu`
+-- Ketidakleluasaan untuk tabel `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
   ADD CONSTRAINT `user_access_menu_ibfk_1` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
   ADD CONSTRAINT `user_access_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `user_menu` (`id`);
 
 --
--- Constraints for table `user_sub_menu`
+-- Ketidakleluasaan untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
   ADD CONSTRAINT `user_sub_menu_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `user_menu` (`id`);

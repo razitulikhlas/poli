@@ -17,7 +17,6 @@ class Dokter extends CI_Controller {
 
 	public function index()
 	{
-		
 		$data =[
 			'dokter' 	=> $this->dokter_model->getDetail(),
 			'spesialis' => $this->spesialis_model->getAll()
@@ -29,6 +28,24 @@ class Dokter extends CI_Controller {
 		$this->load->view('dokter/v_view',$data);
 		$this->load->view('templates/footer');
 
+	}
+
+	public function detail($kd_dokter){
+		$where = array('kd_dokter' => $kd_dokter);
+
+		$data = [
+			'dokter'   => $this->dokter_model->getWhere($where),
+			'diagnosa' => $this->dokter_model->getTotalDiagnosa($kd_dokter)
+		];
+
+		print_r($data['diagnosa']);
+
+		die();
+		
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('dokter/v_detail',$data);
+		$this->load->view('templates/footer');
 	}
 
 	public function tambah(){
