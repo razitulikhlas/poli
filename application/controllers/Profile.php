@@ -11,13 +11,14 @@ class Profile extends CI_Controller {
 			SELECT tbl_dokter.*,tbl_spesialis.tarif 
 			FROM tbl_dokter,tbl_spesialis
 			WHERE tbl_spesialis.kd_spesialis = tbl_dokter.spesialis &&
-			tbl_dokter.kd_dokter = '30'
+			tbl_dokter.kd_dokter = '28'
 		";
-		$where = array('kd_dokter' => '30');
+		$where = array('kd_dokter' => '28');
 
 		$jadwal = array('kd_dokter');
 		$data =[
-				'dokter' => $this->profile_model->get_data($query)->result()
+				'dokter' => $this->profile_model->get_data($query)->result(),
+				'pasien'   => $this->dokter_model->getTotalPasien(28),
 			]; 
 		$this->load->model('profile_model');
 		$this->load->view('templates/header');
@@ -47,7 +48,7 @@ class Profile extends CI_Controller {
 
 	public function checkData(){
 		$today = date('ymd');
-		$query = "select max(kd_absensi) as last from tbl_absensi where kd_absensi like '$today%' && kd_dokter= 30";
+		$query = "select max(kd_absensi) as last from tbl_absensi where kd_absensi like '$today%' && kd_dokter= 28";
 
 		$data =$this->profile_model->get_absen($query)->result_array();
 

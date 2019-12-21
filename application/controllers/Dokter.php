@@ -30,18 +30,66 @@ class Dokter extends CI_Controller {
 
 	}
 
+	public function diagnosaDokter($kd_dokter){
+		$where = array("kd_dokter" => $kd_dokter);
+		$data =[
+			"diagnosa" => $this->diagnosa_model->getAllWhere($where),
+			'dokter'   => $this->dokter_model->getWhere($where),
+		];
+		$this->load->model('dokter_model');
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('dokter/v_diagnosa',$data);
+		$this->load->view('templates/footer');
+	}
+
+	public function pasienDokter($kd_dokter){
+		$where = array("kd_dokter" => $kd_dokter);
+		$data =[
+			"pasien"   => $this->dokter_model->getPasien($kd_dokter),
+			'dokter'   => $this->dokter_model->getWhere($where),
+		];
+
+		// print_r($data['pasien']);
+		// die();
+		$this->load->model('dokter_model');
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('dokter/v_pasien',$data);
+		$this->load->view('templates/footer');
+	}
+
+	public function riwayatGaji($kd_dokter){
+
+		$where = array("kd_dokter" => $kd_dokter);
+
+		$data =[
+			"riwayatgaji" => $this->dokter_model->getRiwayat($where),
+			'dokter'   => $this->dokter_model->getWhere($where),
+		];
+
+		// print_r($data['riwayatgaji']);
+		// die();
+		$this->load->model('dokter_model');
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('dokter/v_riwayat',$data);
+		$this->load->view('templates/footer');
+	}
+
 	public function detail($kd_dokter){
 		$where = array('kd_dokter' => $kd_dokter);
 
 		$data = [
 			'dokter'   => $this->dokter_model->getWhere($where),
-			'diagnosa' => $this->dokter_model->getTotalDiagnosa($kd_dokter)
+			'diagnosa' => $this->dokter_model->getTotalDiagnosa($kd_dokter),
+			'pasien'   => $this->dokter_model->getTotalPasien($kd_dokter),
+			'kddokter'   => $kd_dokter
 		];
 
-		print_r($data['diagnosa']);
+		// print_r($data['pasien']);
+		// die();
 
-		die();
-		
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
 		$this->load->view('dokter/v_detail',$data);

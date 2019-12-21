@@ -20,7 +20,60 @@ class Pasien extends CI_Controller {
 		$this->load->view('templates/sidebar');
 		$this->load->view('pasien/v_add');
 		$this->load->view('templates/footer');
+	}
 
+	public function detail($kd_pasien){
+		$where = array('kd_pasien' => $kd_pasien);
+
+		$data = [
+			'pasien'   => $this->pasien_model->getWhere($where),
+			'countrekammedis'=>$this->pasien_model->getCountRekam($kd_pasien),
+			'countdokter' => $this->pasien_model->getCountDokter($kd_pasien),
+			'kdpasien'  => $kd_pasien
+		];
+
+		// print_r($data['diagnosa']);
+
+		// die();
+		
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('pasien/v_detail',$data);
+		$this->load->view('templates/footer');
+	}
+
+	public function getRekamMedik($kd_pasien){
+		$where = array('kd_pasien' => $kd_pasien);
+
+		$data = [
+			'rkmedik'   => $this->pasien_model->getDetailRiwayat($kd_pasien),
+			'pasien'    => $this->pasien_model->getWhere($where),
+			'countdokter' => $this->pasien_model->getCountDokter($kd_pasien),
+			'kdpasien'  => $kd_pasien
+		];
+		// print_r($data['pasien']);
+		// die();
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('pasien/v_rekammedik',$data);
+		$this->load->view('templates/footer');
+	}
+
+	public function getListDokter($kd_pasien){
+		$where = array('kd_pasien' => $kd_pasien);
+
+		$data = [
+			'dokter'   => $this->pasien_model->getDetailDokter($kd_pasien),
+			'pasien'    => $this->pasien_model->getWhere($where),
+			'countdokter' => $this->pasien_model->getCountDokter($kd_pasien),
+			'kdpasien'  => $kd_pasien
+		];
+		// print_r($data['pasien']);
+		// die();
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('pasien/v_dokter',$data);
+		$this->load->view('templates/footer');
 	}
 
 	public function add_data(){

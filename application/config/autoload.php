@@ -141,6 +141,7 @@ $autoload['model'] = array(
 	'resep_model',
 	'jadwal_model',
 	'pendaftaran_model',
+	'dasboard_model',
 	'profile_model',
 	'labor_model',
 	'karyawan_model',

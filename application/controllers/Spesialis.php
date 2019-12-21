@@ -20,49 +20,52 @@ class Spesialis extends CI_Controller {
 	}
 
 	public function add_data(){
-		$no 		= $this->input->post('kd_spesialis');
+		$kd_spesialis 		= $this->input->post('kd_spesialis');
 		$nama 		= $this->input->post('namaspesialis');	
 		$tarif		= $this->input->post('tarif');
 		$keterangan	= $this->input->post('keterangan');
-		$valid = array('succes' => false, 'messages' => array());
+		// $valid = array('succes' => false, 'messages' => array());
 
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules('namaspesialis','nama','required');
-		$this->form_validation->set_rules('tarif','tarif','required|numeric');
-		$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
+		// $this->load->library('form_validation');
+		// $this->form_validation->set_rules('namaspesialis','nama','required');
+		// $this->form_validation->set_rules('tarif','tarif','required|numeric');
+		// $this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 		
 
 		$data = array(
+			'kd_spesialis'		=> $kd_spesialis,
 			'nama'				=> $nama,
 			'tarif'				=> $tarif,
 			'keterangan'		=> $keterangan
 		);
 
-		$where = array(
-			'kd_spesialis'	=> $no
-		);
+		$datas = $this->spesialis_model->insert($data);
 
-		if($no == ''){
-			if($this->form_validation->run()){
-				$valid['succes'] = true;
-				$datas = $this->spesialis_model->insert($data);	
-			}else{
-				foreach ($_POST as $key => $value) {
-					$valid['messages'][$key] = form_error($key);
-			 	}
-			}	
-		}else{
-			if($this->form_validation->run()){
-				$valid['succes'] = true;
-				$datas = $this->spesialis_model->update($data,$where);	
-			}else{
-				foreach ($_POST as $key => $value) {
-					$valid['messages'][$key] = form_error($key);
-			 	}
-			}
-		}
+		// $where = array(
+		// 	'kd_spesialis'	=> $kd_spesialis
+		// );
 
-		echo json_encode($valid);	
+		// if($no == ''){
+		// 	if($this->form_validation->run()){
+		// 		$valid['succes'] = true;
+				
+		// 	}else{
+		// 		foreach ($_POST as $key => $value) {
+		// 			$valid['messages'][$key] = form_error($key);
+		// 	 	}
+		// 	}	
+		// }else{
+		// 	if($this->form_validation->run()){
+		// 		$valid['succes'] = true;
+		// 		$datas = $this->spesialis_model->update($data,$where);	
+		// 	}else{
+		// 		foreach ($_POST as $key => $value) {
+		// 			$valid['messages'][$key] = form_error($key);
+		// 	 	}
+		// 	}
+		// }
+
+		echo json_encode('succes');	
 		
 	}
 
@@ -77,7 +80,27 @@ class Spesialis extends CI_Controller {
 		$kd_spesialis = $this->input->post('kd_spesialis');
 		$where = array('kd_spesialis' => $kd_spesialis);
 		$data  = $this->spesialis_model->getAllWhere($where);
-
 		echo json_encode($data);	
+	}
+
+	public function Update(){
+		$kd_spesialis 		= $this->input->post('kd_spesialis');
+		$nama 		= $this->input->post('namaspesialis');	
+		$tarif		= $this->input->post('tarif');
+		$keterangan	= $this->input->post('keterangan');
+
+		$data = array(
+			'nama'				=> $nama,
+			'tarif'				=> $tarif,
+			'keterangan'		=> $keterangan
+		);
+
+		$where = array(
+			'kd_spesialis'	=> $kd_spesialis
+		);
+
+		$datas = $this->spesialis_model->update($data,$where);
+
+		echo json_encode('succes');	
 	}
 }

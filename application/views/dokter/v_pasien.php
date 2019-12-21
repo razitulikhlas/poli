@@ -21,7 +21,7 @@
         <!-- Main row -->
         <div class="card">
               <div class="card-header" style="background-color: aqua">
-                <h3 class="card-title">Data Pasien</h3>
+                <h3 class="card-title">Data Pasien dokter <b><?= $dokter->nama?></b></h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse" style="color: white">
@@ -31,13 +31,6 @@
               </div>
 
               <div class="card-body" style="background-color: #212529; color: white;">
-              <div class="flash-data" data-flashdata="<?= $this->session->flashdata('flash');?>"></div>
-              	<!-- <button type="button" class="btn bg-gradient-danger mb-3" data-toggle="modal" data-target=".bd-example-modal-xl">Tambah Data</button> -->
-              	<a href="<?= base_url()?>pasien/tambah" class="btn btn-danger mb-3"> Tambah </a>
-                <button type="button" class="btn bg-gradient-success mb-3">Export Excell</button>
-              	<button type="button" class="btn bg-gradient-primary mb-3">Export Word</button>
-               <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button> -->
-              
                 <table id="tabel_id" class="table table-bordered mt-3 mb-3" >
         				  <thead>
         				    <tr>
@@ -62,11 +55,7 @@
                           <td><?= $row["nama_ibu"] ?></td>
                           <td>
                           <a href="<?= base_url() ?>pasien/detail/<?= $row['kd_pasien'] ?>" class="btn btn-warning"><i class="fa fa-eye"></i></a>
-                           <button type="button" onclick="submit(<?= $row['kd_pasien']?>)" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button>
-                           <a href="<?= base_url()?>pasien/hapus/<?= $row['kd_pasien']?> " class="btn btn-danger tombol-hapus"><i class="fa fa-trash"></i></a>
-                           
                           </td>
-                         
                         </tr>
                       <?php $i++; ?>
               <?php endforeach; ?>

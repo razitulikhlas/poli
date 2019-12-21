@@ -17,7 +17,7 @@
                 <div class="row">
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
-                      <h5 class="description-header">Rp. 2500.000</h5>
+                      <h5 class="description-header">Rp <?= number_format($dokter[0]->gaji,0,",",".")?></h5>
                       <span class="description-text">PENDAPATAN BULAN INI</span>
                     </div>
                     <!-- /.description-block -->
@@ -33,7 +33,7 @@
                   <!-- /.col -->
                   <div class="col-sm-4">
                     <div class="description-block">
-                      <h5 class="description-header">35</h5>
+                      <h5 class="description-header"><?= $pasien->total?></h5>
                       <span class="description-text">TOTAL PASIEN</span>
                     </div>
                     <!-- /.description-block -->
@@ -45,41 +45,8 @@
             </div>
           <!-- end col -->
     </div>
-    <div class="col-md-12 ">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Jadwal Anda Hari ini</h3>
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-            <i class="fas fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body" style="display: block;">
-          <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Waktu</th>
-                        <th scope="col">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>08-11-1197</td>
-                        <td>
-                           <button type="button" onclick="submit()" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button>
-                           
-                        </td>
-                       
-                      </tr>
-                    </tbody>
-                  </table>
-        </div>
-
-      </div>
-    </div> 
+  
+   
     <div class="col-md-12">
         <div class="card">
                 <div class="card-header">
@@ -91,7 +58,7 @@
                 </div>
                 <div class="card-body" style="display: block;">
                   <div class="col-md-2 mb-2">
-                    <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-plus"></i> Masukan jadwal</button>
+                    <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i> edit</button>
                   </div>
                   <table class="table">
                   <tbody>

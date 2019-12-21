@@ -29,7 +29,6 @@
                       <th scope="col">Spesialis</th>
                       <th scope="col">No Izin</th>
                       <th scope="col">No Hp</th>
-                      <th scope="col">Tarif</th>
                       <th scope="col">Aksi</th>
                     </tr>
                   </thead>
@@ -42,8 +41,6 @@
                           <td><?= $row["namaspesialis"] ?></td>
                           <td><?= $row["noizin"] ?></td>
                           <td><?= $row["nohp"] ?></td>
-                          <td><?= $row["tarif"] ?></td>
-                          
                           <td>
                            <a href="<?= base_url()?>dokter/detail/<?=$row['kd_dokter']?>" class="btn btn-warning"><i class="fa fa-eye"></i></a>
                            <button type="button" onclick="submit(<?= $row['kd_dokter']?>)" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button>

@@ -85,8 +85,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <input type="hidden" class="form-control" id="kd_spesialis" name="kd_spesialis" placeholder="Kode Spesialis">
-      <div class="form-group has-error">
+      <div class="form-group">
+        <label for="kodespesialis">Kode Spesialis</label>
+        <input type="text" class="form-control" id="kodespesialis" name="kodespesialis" placeholder="Kode Spesialis">
+      </div>
+      <div class="form-group">
         <label for="namaspesialis">NAMA SPESIALIS</label>
           <div class="controls">
           <input type="text" name="namaspesialis"  class="form-control" id="namaspesialis" placeholder="Nama Spesialis">
@@ -160,7 +163,7 @@
           dataType : 'json',
           success  : function(hasil){
             console.log(hasil);
-            $("[name='kd_spesialis']").val(hasil[0].kd_spesialis);
+            $("[name='kodespesialis']").val(hasil[0].kd_spesialis);
             $("[name='namaspesialis']").val(hasil[0].nama);
             $("[name='tarif']").val(hasil[0].tarif);
             $("[name='keterangan']").val(hasil[0].keterangan);
@@ -171,7 +174,7 @@
     }
 
     function ubah(){
-      var kd_spesialis   = $("[name='kd_spesialis']").val();
+      var kd_spesialis   = $("[name='kodespesialis']").val();
       var namaspesialis  = $("[name='namaspesialis']").val();
       var tarif          = $("[name='tarif']").val();
       var keterangan     = $("[name='keterangan']").val();
@@ -182,31 +185,19 @@
                     '&namaspesialis='+namaspesialis+
                     '&tarif='+tarif+
                     '&keterangan='+keterangan,
-        url      : '<?= base_url()."spesialis/add_data"?>',
+        url      : '<?= base_url()."spesialis/Update"?>',
         dataType : 'json',
         success  : function(hasil){
-         if(hasil.succes == true){
+          if(hasil == 'succes'){
             $('.text-danger').remove();
             $('#exampleModal').modal('hide');
+                Swal.fire({
+                title : 'Data Spesialis ',
+                text  : 'Berhasil ditambah',
+                type  : 'success'
+            });
             ambilData();
-            $("[name='kd_spesialis']").val('');
-            $("[name='namaspesialis']").val('');
-            $("[name='tarif']").val('');
-            $("[name='keterangan']").val('');
-
-            Swal.fire({
-              title : 'Data Spesialis ',
-              text  : 'Berhasil Update',
-              type  : 'success'
-            });
-         }else{
-            console.log(hasil);
-            $('.text-danger').remove();
-            $.each(hasil.messages, function(key,value){
-              var element = $('#'+key);
-              element.after(value);
-            });
-         }
+          }
         }
       });
     }
@@ -252,7 +243,7 @@
 
    
     function save(){
-      var kd_spesialis   = $("[name='kd_spesialis']").val();
+      var kd_spesialis   = $("[name='kodespesialis']").val();
       var namaspesialis  = $("[name='namaspesialis']").val();
       var tarif          = $("[name='tarif']").val();
       var keterangan     = $("[name='keterangan']").val();
@@ -266,28 +257,38 @@
         url      : '<?= base_url()."spesialis/add_data"?>',
         dataType : 'json',
         success  : function(hasil){
-          if(hasil.succes == true){
+          if(hasil == 'succes'){
             $('.text-danger').remove();
             $('#exampleModal').modal('hide');
+                Swal.fire({
+                title : 'Data Spesialis ',
+                text  : 'Berhasil ditambah',
+                type  : 'success'
+            });
             ambilData();
-            $("[name='kd_spesialis']").val('');
-            $("[name='namaspesialis']").val('');
-            $("[name='tarif']").val('');
-            $("[name='keterangan']").val('');
+          }
+        //   if(hasil.succes == true){
+        //     $('.text-danger').remove();
+        //     $('#exampleModal').modal('hide');
+        //     ambilData();
+        //     $("[name='kd_spesialis']").val('');
+        //     $("[name='namaspesialis']").val('');
+        //     $("[name='tarif']").val('');
+        //     $("[name='keterangan']").val('');
 
-            Swal.fire({
-              title : 'Data Spesialis ',
-              text  : 'Berhasil ditambah',
-              type  : 'success'
-            });
-         }else{
-            console.log(hasil);
-            $('.text-danger').remove();
-            $.each(hasil.messages, function(key,value){
-              var element = $('#'+key);
-              element.after(value);
-            });
-         }
+        //     Swal.fire({
+        //       title : 'Data Spesialis ',
+        //       text  : 'Berhasil ditambah',
+        //       type  : 'success'
+        //     });
+        //  }else{
+        //     console.log(hasil);
+        //     $('.text-danger').remove();
+        //     $.each(hasil.messages, function(key,value){
+        //       var element = $('#'+key);
+        //       element.after(value);
+        //     });
+        //  }
           
         }
       });

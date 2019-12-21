@@ -316,8 +316,7 @@ let faktur    = $('#nofaktur').val();
     $.ajax({
             type     : 'POST',
             data     :  'total='+totalHarga+
-                        '&faktur='+faktur
-                        '&kd_dokter='+kd_dokter,
+                        '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/simpanData"?>',
             dataType : 'json',
             success  : function(hasil){

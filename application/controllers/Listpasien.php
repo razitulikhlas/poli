@@ -77,7 +77,7 @@ class ListPasien extends CI_Controller
 
 		$result  = $this->save('tbl_transaksi',$data);//save data
 		$this->pendaftaran_model->update($dataupdate,$where);//update status transaksi
-		$this->insertRiwayat($kd_dokter,$faktur);
+		// $this->insertRiwayat($kd_dokter,$faktur);
 		echo json_encode($result);
 	}
 

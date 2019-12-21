@@ -83,6 +83,11 @@ class MY_Model extends CI_Model {
         return $this->db->get()->row();
     }
 
+    //fungsi untuk menghitung jumlah data
+    public function getCount(){
+       return $this->db->count_all_results($this->table, FALSE);
+    }
+
     
 
     public function getRincian($select,$join,$where){

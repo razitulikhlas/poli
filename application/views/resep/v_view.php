@@ -171,8 +171,6 @@
                             <td>`+karyawan+`</td>
                             <td>`+data.resep[i].created_at+`</td>
                             <td>`+status+`</td>
-
-
                           </tr>`;
             }
             $('#target').html(baris);

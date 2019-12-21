@@ -54,58 +54,64 @@
             </ul>
           </li> -->
          
+          <li class="nav-item">
+            <a href="<?php echo base_url() ?>dasboard/index" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt text-info" ></i>
+              <p> Dasboard</p>
+            </a>
+          </li>
 
           <li class="nav-item">
             <a href="<?php echo base_url() ?>dokter/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-user-md text-info"></i>
               <p>Dokter</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>jadwal/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon far fa-calendar-times text-info"></i>
               <p>Jadwal Dokter</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>pasien/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-user-injured text-info"></i>
               <p>Pasien</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url()?>pendaftaran/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-book-open text-info"></i>
               <p>Daftar Berobat</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>obat/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-tablets text-info"></i>
               <p>Obat</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>karyawan/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-user-nurse text-info"></i>
               <p>Karyawan</p>
             </a>
           </li>
            <li class="nav-item">
             <a href="<?php echo base_url() ?>spesialis/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-clinic-medical text-info"></i>
               <p>Spesialis</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>resep/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-cash-register text-info"></i>
               <p>Transaksi</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>listpasien/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-list text-info"></i>
               <p>List Pasien</p>
             </a>
           </li>
@@ -117,25 +123,25 @@
           </li> -->
            <li class="nav-item">
             <a href="<?php echo base_url() ?>Diagnosa/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-diagnoses text-info"></i>
               <p>Diagnosa</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>Tindakan/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-syringe text-info"></i>
               <p>Tindakan</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>Labor/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-flask text-info"></i>
               <p>Lab</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="<?php echo base_url() ?>Profile/index" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
+              <i class="nav-icon fas fa-id-card text-info"></i>
               <p>Profile</p>
             </a>
           </li>

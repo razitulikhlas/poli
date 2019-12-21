@@ -7,11 +7,12 @@
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file"></i></span>
+              <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-file"></i></span>
 
-              <div class="info-box-content">
+              <div class="info-box-content" id="">
                 <span class="info-box-text">Diagnosa</span>
-                <span class="info-box-number">41,410</span>
+                <span class="info-box-number"><?= $diagnosa->jumlah?></span>
+                <a href="<?= base_url()?>dokter/diagnosaDokter/<?= $kddokter?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -28,7 +29,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Total Pendapatan</span>
-                <span class="info-box-number">Rp <?=$dokter->gaji?></span>
+                <span class="info-box-number">Rp <?= number_format($dokter->gaji,0,",",".")?></span>
+                <a href="<?= base_url()?>dokter/riwayatGaji/<?= $kddokter?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -41,7 +43,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Pasien</span>
-                <span class="info-box-number">2,000</span>
+                <span class="info-box-number"><?= $pasien->total?></span>
+                <a href="<?= base_url()?>dokter/pasienDokter/<?= $kddokter?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -56,8 +59,6 @@
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                    <i class="fas fa-times"></i></button>
                 </div>
               </div>
               <div class="card-body">
