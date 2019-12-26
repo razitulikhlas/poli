@@ -46,7 +46,7 @@
                           <td><?= $row['alamat'] ?></td>
                           
                           <td>
-                           <a href="" class="btn btn-primary">Detai</a>
+                          <a href="<?= base_url()?>karyawan/detail/<?=$row['no']?>" class="btn btn-warning"><i class="fa fa-eye"></i></a>
                            <button type="button" onclick="submit(<?= $row['no']?>)" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-edit"></i></button>
                            <a href="<?= base_url()?>karyawan/hapusData/<?= $row['no']?> " class="btn btn-danger tombol-hapus"><i class="fa fa-trash"></i></a>
                           </td>

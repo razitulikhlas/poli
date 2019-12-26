@@ -49,6 +49,16 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="jenis">JENIS</label>
+                    <select class="form-control form-control-lg" id="jenis" name="jenis">
+                    <option>Perawat</option>
+                    <option>Labor</option>
+                    <option>Kasir</option>
+                    <option>Satpam</option>
+                    </select>
+                </div>
+               
+                <div class="form-group">
                   <label for="tgl">Tanggal Lahir</label>
                   <input type="date" class="form-control" id="tgl" name="tgl"
                   placeholder="Tanggal Lahir" >

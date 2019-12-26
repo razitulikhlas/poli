@@ -7,4 +7,9 @@ class Tindakan_model extends MY_Model {
         $detail = 'detail_tindakan';
         parent::__construct($table,$detail);
     }
+
+    public function delete_log($id){
+        $query ="delete from log_gaji_karyawan where keterangan like '%detail_tindakan$id'";
+        $this->db->query($query);
+    }
 }

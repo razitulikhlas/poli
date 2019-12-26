@@ -159,9 +159,9 @@
                       </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                          <label>KARYAWAN</label>
+                          <label>Perawat</label>
                           <select class="custom-select" id="karyawan" name="karyawan_tindakan"> 
-                            <?php foreach($karyawan as $row) : ?>
+                            <?php foreach($perawat as $row) : ?>
                               <option value="<?= $row['no'] ?>"><?= $row['nama']  ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -194,7 +194,7 @@
                         <div class="form-group">
                           <label>KARYAWAN</label>
                           <select class="custom-select" id="karyawanlab" name="karyawan_lab"> 
-                            <?php foreach($karyawan as $row) : ?>
+                            <?php foreach($labor as $row) : ?>
                               <option value="<?= $row['no'] ?>"><?= $row['nama']  ?></option>
                             <?php endforeach; ?>
                         </select>

@@ -8,6 +8,11 @@ class Labor_model extends MY_Model {
         parent::__construct($table,$tablejoin);
     }
 
+    public function delete_log($id){
+        $query ="delete from log_gaji_karyawan where keterangan like '%detail_lab$id'";
+        $this->db->query($query);
+    }
+
     // public function subHarga($nofaktur){
     //     $this->db->select_sum('harga');
     //     $this->db->from('laboratorium');

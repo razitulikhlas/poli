@@ -1,26 +1,30 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pendaftaran_model extends MY_Model {
-    public function __construct(){
+class Pendaftaran_model extends MY_Model
+{
+    public function __construct()
+    {
         $table = 'tbl_pendaftaran';
         $detail = '';
-        parent::__construct($table,$detail);
+        parent::__construct($table, $detail);
     }
 
-    public function detailPendaftaran(){
-        $today =date('ymd');
+    public function detailPendaftaran()
+    {
+        $today = date('ymd');
         $this->db->select("tbl_pendaftaran.no_pendaftaran,tbl_pendaftaran.kd_pasien,tbl_jadwal.kd_dokter,tbl_dokter.nama AS 'namadokter', pasien.nama,tgl_lahir,pasien.jenis_kelamin,pasien.nohp,tbl_pendaftaran.status");
         $this->db->from('pasien');
-        $this->db->join('tbl_pendaftaran','tbl_pendaftaran.kd_pasien=pasien.kd_pasien');
-        $this->db->join('tbl_jadwal','tbl_jadwal.kd_jadwal=tbl_pendaftaran.kd_jadwal');
-        $this->db->join('tbl_dokter','tbl_dokter.kd_dokter=tbl_jadwal.kd_dokter');
-        $this->db->like('tbl_pendaftaran.no_pendaftaran',$today,'after');//change value no pendaftaran
-        $this->db->where('tbl_jadwal.kd_dokter','28');//change value dokter
+        $this->db->join('tbl_pendaftaran', 'tbl_pendaftaran.kd_pasien=pasien.kd_pasien');
+        $this->db->join('tbl_jadwal', 'tbl_jadwal.kd_jadwal=tbl_pendaftaran.kd_jadwal');
+        $this->db->join('tbl_dokter', 'tbl_dokter.kd_dokter=tbl_jadwal.kd_dokter');
+        $this->db->like('tbl_pendaftaran.no_pendaftaran', $today, 'after'); //change value no pendaftaran
+        $this->db->where('tbl_jadwal.kd_dokter', '28'); //change value dokter
         return $this->db->get();
     }
 
-    public function getItemTambah($kodepasien){
+    public function getItemTambah($kodepasien)
+    {
         $query = "
 			SELECT tbl_pendaftaran.kd_pasien,tbl_jadwal.kd_dokter,pasien.nama AS 'namapasien',
 			tbl_dokter.nama AS 'namadokter'
@@ -31,29 +35,46 @@ class Pendaftaran_model extends MY_Model {
 			tbl_jadwal.kd_dokter = tbl_dokter.kd_dokter &&
 			tbl_pendaftaran.no_pendaftaran = '$kodepasien'
         ";
-        
+
         return $this->db->query($query)->row();
     }
 
-    public function getNama(){
-        $query = "
-			SELECT tbl_dokter.nama AS 'namadokter',pasien.nama AS 'namapasien'
-			FROM tbl_dokter,pasien
-			where kd_dokter='$kd_dokter' && kd_pasien='$kd_pasien'
-		";
-        return $this->db->query($query)->row();
-    }
+    // public function getNama(){
+    //     $query = "
+    // 		SELECT tbl_dokter.nama AS 'namadokter',pasien.nama AS 'namapasien'
+    // 		FROM tbl_dokter,pasien
+    // 		where kd_dokter='$kd_dokter' && kd_pasien='$kd_pasien'
+    // 	";
+    //     return $this->db->query($query)->row();
+    // }
 
-    public function get_faktur($query){
+    public function get_faktur($query)
+    {
         return $this->db->query($query);
     }
 
-    public function getDataPasien($query){
+    public function getDataPasien($query)
+    {
         return $this->db->query($query)->result();
     }
 
-    public function countPasien(){
-       return  $this->db->count_all('tbl_pendaftaran');
+    public function countPasien()
+    {
+        return  $this->db->count_all('tbl_pendaftaran');
+    }
+
+    public function getAllNopen($kd_poli)
+    {
+        $query = "SELECT pasien.nama AS 'namapasien', tbl_dokter.nama AS 'namadokter',
+		no_pendaftaran,tbl_jadwal.waktu AS 'waktu'
+		FROM tbl_dokter,pasien,tbl_jadwal,tbl_pendaftaran
+		WHERE tbl_dokter.kd_dokter = tbl_jadwal.kd_dokter && 
+		tbl_jadwal.kd_jadwal = tbl_pendaftaran.kd_jadwal && 
+		tbl_pendaftaran.kd_pasien = pasien.kd_pasien &&
+        tbl_pendaftaran.kd_poli = '$kd_poli'";
+
+        $data = $this->db->query($query)->result_array();
+        return $data;
     }
 
     // public function getFaktur(){
@@ -63,20 +84,20 @@ class Pendaftaran_model extends MY_Model {
     //     select max(no_pendaftaran) as last from tbl_pendaftaran where no_pendaftaran like '$nopendaf%' & ";
     // }
 
-    public function getkdDokter($where){
+    public function getkdDokter($where)
+    {
         $this->db->select('kd_dokter');
         $this->db->from('tbl_jadwal');
-        $this->db->where('kd_jadwal',$where);
+        $this->db->where('kd_jadwal', $where);
         return $this->db->get()->row();
     }
 
-  public function checkStatus(){
+    public function checkStatus()
+    {
         $this->db->select('status,no_pendaftaran');
         $this->db->from('tbl_pendaftaran');
         return $this->db->get()->result_array();
     }
-
-    
 }
 
 
@@ -159,5 +180,3 @@ class Pendaftaran_model extends MY_Model {
 //         return $this->db->query($query)->row();
 //     }
 // }
-
-

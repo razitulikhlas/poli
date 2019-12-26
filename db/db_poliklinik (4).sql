@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 12 Des 2019 pada 03.06
+-- Waktu pembuatan: 26 Des 2019 pada 17.09
 -- Versi server: 10.4.6-MariaDB
 -- Versi PHP: 7.1.32
 
@@ -40,8 +40,11 @@ CREATE TABLE `detail_diagnosa` (
 --
 
 INSERT INTO `detail_diagnosa` (`no`, `no_faktur`, `kd_diagnosa`, `created_at`) VALUES
-(94, '191209PJ28-001', 6, '2019-12-09 15:02:17'),
-(95, '191211PJ28-001', 6, '2019-12-11 05:51:29');
+(102, '191222PJ28-001', 7, '2019-11-01 06:33:50'),
+(103, '191223PJ28-001', 6, '2019-12-23 03:46:15'),
+(104, '191223PJ28-001', 7, '2019-12-23 03:46:19'),
+(105, '191223PJ28-002', 5, '2019-12-23 09:38:21'),
+(106, '191226PJ28-001', 6, '2019-12-26 09:06:35');
 
 -- --------------------------------------------------------
 
@@ -61,8 +64,10 @@ CREATE TABLE `detail_keluhan` (
 --
 
 INSERT INTO `detail_keluhan` (`no`, `no_faktur`, `keluhan`, `created_at`) VALUES
-(42, '191211PJ28-001', 'Sakit Kepala', '2019-12-11 05:50:57'),
-(50, '191211PJ28-002', 'Sakit Kepala', '2019-12-11 06:02:19');
+(58, '191222PJ28-001', 'Sakit Kepala', '2019-12-22 06:33:45'),
+(59, '191223PJ28-001', 'Demam Tinggi', '2019-12-23 03:46:09'),
+(60, '191223PJ28-002', 'Sakit Kepala', '2019-12-23 09:38:21'),
+(61, '191226PJ28-001', 'Sakit Kepala', '2019-12-26 09:06:33');
 
 -- --------------------------------------------------------
 
@@ -86,7 +91,19 @@ CREATE TABLE `detail_lab` (
 --
 
 INSERT INTO `detail_lab` (`no`, `no_faktur`, `kd_karyawan`, `kd_labor`, `harga`, `fee_karywan`, `fee_dokter`, `created_at`) VALUES
-(37, '191209PJ28-002', 12, 2, 30000, 2000, 10000, '2019-12-09 16:03:44');
+(57, '191222PJ28-001', 14, 2, 30000, 2000, 10000, '2019-12-22 06:34:29'),
+(58, '191223PJ28-001', 14, 6, 27000, 2000, 5000, '2019-12-23 03:46:46'),
+(59, '191226PJ28-001', 14, 2, 30000, 2000, 10000, '2019-12-26 09:06:43');
+
+--
+-- Trigger `detail_lab`
+--
+DELIMITER $$
+CREATE TRIGGER `afterdetaillab` AFTER INSERT ON `detail_lab` FOR EACH ROW BEGIN
+    INSERT into log_gaji_karyawan (kd_karyawan,keterangan,gaji) VALUES (new.kd_karyawan,concat(new.no_faktur," no detail_lab",new.no),new.fee_karywan);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -108,8 +125,10 @@ CREATE TABLE `detail_obat` (
 --
 
 INSERT INTO `detail_obat` (`no`, `no_faktur`, `kd_obat`, `jumlah`, `sub_total`, `created_at`) VALUES
-(258, '191209PJ28-001', 32, 2, 1500, '2019-12-09 15:02:17'),
-(259, '191211PJ28-001', 32, 2, 1500, '2019-12-11 05:51:32');
+(268, '191222PJ28-001', 32, 2, 1500, '2019-12-22 06:33:53'),
+(269, '191223PJ28-001', 32, 5, 3750, '2019-12-23 03:46:33'),
+(270, '191223PJ28-002', 32, 1, 750, '2019-12-23 09:38:24'),
+(271, '191226PJ28-001', 32, 2, 1500, '2019-12-26 09:06:37');
 
 -- --------------------------------------------------------
 
@@ -133,9 +152,20 @@ CREATE TABLE `detail_tindakan` (
 --
 
 INSERT INTO `detail_tindakan` (`no`, `no_faktur`, `kd_tindakan`, `kd_karyawan`, `harga`, `fee_dokter`, `fee_karywan`, `created_at`) VALUES
-(57, '191209PJ28-002', 4, 12, 1000000, 5000000, 5000, '2019-12-09 16:00:37'),
-(58, '191209PJ28-002', 5, 12, 40000, 5000, 2000, '2019-12-09 16:00:41'),
-(59, '191211PJ28-001', 4, 12, 1000000, 5000000, 5000, '2019-12-11 05:51:33');
+(79, '191222PJ28-001', 6, 12, 27000, 10000, 2000, '2019-12-22 06:34:22'),
+(80, '191223PJ28-001', 5, 12, 40000, 5000, 2000, '2019-12-23 03:46:42'),
+(81, '191223PJ28-002', 6, 12, 27000, 10000, 2000, '2019-12-23 09:38:18'),
+(82, '191226PJ28-001', 4, 12, 1000000, 5000000, 5000, '2019-12-26 09:06:40');
+
+--
+-- Trigger `detail_tindakan`
+--
+DELIMITER $$
+CREATE TRIGGER `afterdetailtindakan` AFTER INSERT ON `detail_tindakan` FOR EACH ROW BEGIN
+    INSERT into log_gaji_karyawan (kd_karyawan,keterangan,gaji) VALUES (new.kd_karyawan,concat(new.no_faktur," no detail_tindakan",new.no),new.fee_karywan);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -199,7 +229,61 @@ CREATE TABLE `log_gaji` (
 --
 
 INSERT INTO `log_gaji` (`id`, `kd_dokter`, `gaji`, `keterangan`, `created_at`) VALUES
-(1, 30, 500000, 'Absensi', '2019-12-11 05:16:28');
+(1, 30, 500000, 'Absensi', '2019-12-11 05:16:28'),
+(2, 28, 500000, 'Absensi', '2019-12-12 11:40:33'),
+(3, 28, 500000, 'Absensi', '2019-12-13 17:44:20'),
+(4, 28, 500000, 'Absensi', '2019-12-14 01:42:08'),
+(5, 28, 500000, 'Absensi', '2019-12-15 01:21:38'),
+(6, 28, 500000, 'Absensi', '2019-12-26 09:50:45');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `log_gaji_karyawan`
+--
+
+CREATE TABLE `log_gaji_karyawan` (
+  `id` bigint(20) NOT NULL,
+  `kd_karyawan` bigint(20) NOT NULL,
+  `keterangan` varchar(50) NOT NULL,
+  `gaji` double NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `log_gaji_karyawan`
+--
+
+INSERT INTO `log_gaji_karyawan` (`id`, `kd_karyawan`, `keterangan`, `gaji`, `created_at`) VALUES
+(30, 12, '191222PJ28-001 no detail_tindakan79', 2000, '2019-12-22 06:34:22'),
+(31, 14, '191222PJ28-001 no detail_lab57', 2000, '2019-12-22 06:34:29'),
+(32, 12, '191223PJ28-001 no detail_tindakan80', 2000, '2019-12-23 03:46:42'),
+(33, 14, '191223PJ28-001 no detail_lab58', 2000, '2019-12-23 03:46:46'),
+(34, 12, '191223PJ28-002 no detail_tindakan81', 2000, '2019-12-23 09:38:18'),
+(35, 12, '191226PJ28-001 no detail_tindakan82', 5000, '2019-12-26 09:06:40'),
+(36, 14, '191226PJ28-001 no detail_lab59', 2000, '2019-12-26 09:06:43');
+
+--
+-- Trigger `log_gaji_karyawan`
+--
+DELIMITER $$
+CREATE TRIGGER `update_gaji_karyawan` AFTER INSERT ON `log_gaji_karyawan` FOR EACH ROW BEGIN
+    update tbl_karyawan
+    set gaji = gaji+new.gaji
+    WHERE
+    no =new.kd_karyawan; 
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_gaji_karyawan_delete` AFTER DELETE ON `log_gaji_karyawan` FOR EACH ROW BEGIN
+    update tbl_karyawan
+    set gaji = gaji-old.gaji
+    WHERE
+    no =old.kd_karyawan; 
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -250,7 +334,12 @@ CREATE TABLE `tbl_absensi` (
 --
 
 INSERT INTO `tbl_absensi` (`kd_absensi`, `kd_dokter`, `waktu`, `tarif`) VALUES
-(191211, 30, '2019-12-11 05:16:28', 500000);
+(191211, 30, '2019-12-11 05:16:28', 500000),
+(191212, 28, '2019-12-12 11:40:33', 500000),
+(191213, 28, '2019-12-13 17:44:20', 500000),
+(191214, 28, '2019-12-14 01:42:08', 500000),
+(191215, 28, '2019-12-15 01:21:38', 500000),
+(191226, 28, '2019-12-26 09:50:45', 500000);
 
 --
 -- Trigger `tbl_absensi`
@@ -281,18 +370,19 @@ CREATE TABLE `tbl_diagnosa` (
   `no` bigint(20) NOT NULL,
   `nama_diagnosa` varchar(220) NOT NULL,
   `deskripsi` varchar(220) NOT NULL,
-  `kd_dokter` bigint(20) NOT NULL
+  `kd_dokter` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `tbl_diagnosa`
 --
 
-INSERT INTO `tbl_diagnosa` (`no`, `nama_diagnosa`, `deskripsi`, `kd_dokter`) VALUES
-(5, 'Asma', 'disebabkan oleh debu', 27),
-(6, 'flu', 'harus di jaga makan dan kondisi badan', 27),
-(7, 'Demam berdarah', 'demam tinggi', 0),
-(8, 'Sakit kaki', 'terkilir', 0);
+INSERT INTO `tbl_diagnosa` (`no`, `nama_diagnosa`, `deskripsi`, `kd_dokter`, `created_at`) VALUES
+(5, 'Asma', 'disebabkan oleh debu', 27, '2019-12-12 11:42:52'),
+(6, 'flu', 'harus di jaga makan dan kondisi badan', 27, '2019-12-12 11:42:52'),
+(7, 'Demam berdarah', 'demam tinggi', 28, '2019-12-12 11:42:52'),
+(8, 'Sakit kaki', 'terkilir', 28, '2019-12-12 11:42:52');
 
 -- --------------------------------------------------------
 
@@ -327,7 +417,7 @@ CREATE TABLE `tbl_dokter` (
 
 INSERT INTO `tbl_dokter` (`kd_dokter`, `nama`, `gaji`, `jenis_kelamin`, `nohp`, `noizin`, `alamat`, `provinsi`, `kota`, `kecamatan`, `kelurahan`, `tampat_lahir`, `tanggal_lahir`, `spesialis`, `email`, `password`, `photo`, `created_at`) VALUES
 (27, 'Iqbal', 0, 'pria', '082169146904', '1711082035', 'sdsa', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-12', 'PM', 'iqbal@gmail.com', '123', 'AdminLTELogo.png', '2019-12-09 12:57:19'),
-(28, 'Rizkhan Hadi', 0, 'pria', '082169146904', '1711082039', 'jalan taruko no 2', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-05', 'PJ', 'rizkhanhadi@gmail.com', '123', 'avatar.png', '2019-12-09 12:57:19'),
+(28, 'Rizkhan Hadi', 2500000, 'pria', '082169146904', '1711082039', 'jalan taruko no 2', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '2019-11-05', 'PJ', 'rizkhanhadi@gmail.com', '123', 'avatar.png', '2019-12-26 09:50:45'),
 (30, 'Elang Abdul Azis', 500000, 'pria', '082169146904', '1711082036', 'Jalan Padang 4 no 424 Siteba', 'SUMBAR', 'PADANG', 'NANGGALO', 'SURAU GADANG', 'Padang', '1997-11-04', 'PJ', 'razituli@gmail.com', '123', 'avatar5.png', '2019-12-11 05:16:28');
 
 -- --------------------------------------------------------
@@ -341,7 +431,7 @@ CREATE TABLE `tbl_jadwal` (
   `kd_poli` varchar(12) NOT NULL,
   `kd_dokter` bigint(20) NOT NULL,
   `waktu` varchar(30) NOT NULL,
-  `tanggal` date NOT NULL,
+  `tanggal` varchar(50) NOT NULL,
   `status` varchar(20) NOT NULL,
   `Keterangan` varchar(200) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -352,8 +442,9 @@ CREATE TABLE `tbl_jadwal` (
 --
 
 INSERT INTO `tbl_jadwal` (`kd_jadwal`, `kd_poli`, `kd_dokter`, `waktu`, `tanggal`, `status`, `Keterangan`, `created_at`) VALUES
-(35, 'PJ', 28, '10:09 PM', '2019-12-11', 'tersedia', '1 jam sebelum berobat periksa darah', '2019-12-11 05:50:15'),
-(36, 'PJ', 30, '10:09 PM', '2019-12-11', 'tersedia', '', '2019-12-11 07:14:53');
+(35, 'PJ', 28, '10:09 PM', 'Sunday', 'tersedia', '1 jam sebelum berobat periksa darah', '2019-12-26 15:47:30'),
+(36, 'PJ', 30, '10:09 PM', 'Tuesday,Thursday,Saturday', 'tersedia', '1 jam sebelum berobat periksa darah', '2019-12-26 15:53:43'),
+(40, 'PM', 27, '9:15 AM', 'Thursday', 'tersedia', 'Check darah 1 jam sebelum berobat', '2019-12-26 14:59:14');
 
 -- --------------------------------------------------------
 
@@ -367,15 +458,20 @@ CREATE TABLE `tbl_karyawan` (
   `jenis_kelamin` enum('Laki-Laki','Wanita') NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `no_hp` varchar(15) NOT NULL,
-  `alamat` varchar(220) NOT NULL
+  `alamat` varchar(220) NOT NULL,
+  `gaji` double NOT NULL,
+  `jenis` enum('perawat','labor','kasir','satpam') NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `tbl_karyawan`
 --
 
-INSERT INTO `tbl_karyawan` (`no`, `nama`, `jenis_kelamin`, `tanggal_lahir`, `no_hp`, `alamat`) VALUES
-(12, 'Widya', 'Wanita', '2019-11-26', '082169146904', 'jalan pasa baru');
+INSERT INTO `tbl_karyawan` (`no`, `nama`, `jenis_kelamin`, `tanggal_lahir`, `no_hp`, `alamat`, `gaji`, `jenis`, `created_at`) VALUES
+(12, 'Widya', 'Wanita', '2019-11-26', '082169146904', 'jalan pasa baru', 11000, 'perawat', '2019-12-26 09:06:40'),
+(13, 'Elang Abdul Azis', 'Laki-Laki', '2019-12-22', '082169146904', 'sad', 0, 'satpam', '2019-12-22 06:24:06'),
+(14, 'Aidil Putra', 'Laki-Laki', '2019-12-22', '082169146904', 'sad', 6000, 'labor', '2019-12-26 09:06:43');
 
 -- --------------------------------------------------------
 
@@ -406,7 +502,7 @@ CREATE TABLE `tbl_obat` (
 
 INSERT INTO `tbl_obat` (`kd_obat`, `nama_obat`, `miligram`, `jenis_obat`, `unit`, `jumlah_unit`, `jumla_obat_unit`, `total_obat`, `harga_beli`, `harga_modal`, `harga_jual`, `tgl_masuk`, `expired`, `created_at`) VALUES
 (32, 'paramex', 50, 'Tablet', 'box', 50, 10, 500, 5000, 500, 750, '2019-11-11', '2020-12-07', '2019-12-05 06:49:25'),
-(38, 'Procold', 50, 'Tablet', 'box', 50, 10, 0, 10000, 1000, 1500, '2019-12-01', '2019-02-10', '2019-12-11 05:03:02');
+(38, 'Procold', 50, 'Tablet', 'box', 50, 10, 0, 10000, 1000, 1500, '2019-12-01', '2019-12-11', '2019-12-12 13:22:21');
 
 -- --------------------------------------------------------
 
@@ -428,11 +524,10 @@ CREATE TABLE `tbl_pendaftaran` (
 --
 
 INSERT INTO `tbl_pendaftaran` (`no_pendaftaran`, `kd_pasien`, `kd_poli`, `kd_jadwal`, `status`, `created_at`) VALUES
-('191209PJ28-001', 8, 'PJ', 35, 1, '2019-12-09 15:02:28'),
-('191209PJ28-002', 7, 'PJ', 35, 0, '2019-12-09 15:07:27'),
-('191211PJ28-001', 7, 'PJ', 35, 1, '2019-12-11 05:51:35'),
-('191211PJ28-002', 8, 'PJ', 35, 0, '2019-12-11 05:52:40'),
-('191211PJ30-001', 8, 'PJ', 36, 0, '2019-12-11 07:15:03');
+('191222PJ28-001', 7, 'PJ', 35, 1, '2019-12-22 06:34:31'),
+('191223PJ28-001', 7, 'PJ', 35, 1, '2019-12-23 03:46:50'),
+('191223PJ28-002', 8, 'PJ', 35, 1, '2019-12-23 09:38:29'),
+('191226PJ28-001', 7, 'PJ', 35, 1, '2019-12-26 09:06:47');
 
 -- --------------------------------------------------------
 
@@ -453,8 +548,8 @@ CREATE TABLE `tbl_spesialis` (
 
 INSERT INTO `tbl_spesialis` (`kd_spesialis`, `nama`, `tarif`, `keterangan`) VALUES
 ('PJ', 'JANTUNG', 500000, 'Dokter yang ahli dibagian penyakit dalam seperti jantung'),
-('PK', 'Kaki', 500000, ''),
-('PM', 'Mata', 30000, '! jam sebelum berobat chek darah');
+('PM', 'Mata', 30000, 'Dokter yang berkompeten di bidang mata'),
+('PS', 'saraf', 500000, 'Dokter yang berkompeten di bidang saraf');
 
 -- --------------------------------------------------------
 
@@ -500,8 +595,10 @@ CREATE TABLE `tbl_transaksi` (
 --
 
 INSERT INTO `tbl_transaksi` (`no_faktur`, `total_harga`, `dibayar`, `kembalian`, `pelayan`, `created_at`) VALUES
-('191209PJ28-001', 68500, 70000, 1500, 'Fikri', '2019-12-09 15:02:53'),
-('191211PJ28-001', 1001500, 1002000, 500, 'Fikri', '2019-12-11 05:52:16');
+('191222PJ28-001', 58500, 60000, 1500, 'Fikri', '2019-12-22 06:35:16'),
+('191223PJ28-001', 70750, 71000, 250, 'Fikri', '2019-12-23 09:52:41'),
+('191223PJ28-002', 27750, 0, 0, '', '2019-12-23 09:38:29'),
+('191226PJ28-001', 1031500, 1032000, 500, 'Fikri', '2019-12-26 09:16:48');
 
 -- --------------------------------------------------------
 
@@ -671,6 +768,12 @@ ALTER TABLE `log_gaji`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `log_gaji_karyawan`
+--
+ALTER TABLE `log_gaji_karyawan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `pasien`
 --
 ALTER TABLE `pasien`
@@ -703,6 +806,7 @@ ALTER TABLE `tbl_dokter`
 --
 ALTER TABLE `tbl_jadwal`
   ADD PRIMARY KEY (`kd_jadwal`),
+  ADD UNIQUE KEY `kd_dokter_2` (`kd_dokter`),
   ADD KEY `kd_poli` (`kd_poli`),
   ADD KEY `kd_dokter` (`kd_dokter`);
 
@@ -780,31 +884,31 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT untuk tabel `detail_diagnosa`
 --
 ALTER TABLE `detail_diagnosa`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_keluhan`
 --
 ALTER TABLE `detail_keluhan`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_lab`
 --
 ALTER TABLE `detail_lab`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_obat`
 --
 ALTER TABLE `detail_obat`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=272;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_tindakan`
 --
 ALTER TABLE `detail_tindakan`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT untuk tabel `laboratorium`
@@ -822,7 +926,13 @@ ALTER TABLE `level`
 -- AUTO_INCREMENT untuk tabel `log_gaji`
 --
 ALTER TABLE `log_gaji`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT untuk tabel `log_gaji_karyawan`
+--
+ALTER TABLE `log_gaji_karyawan`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT untuk tabel `pasien`
@@ -834,7 +944,7 @@ ALTER TABLE `pasien`
 -- AUTO_INCREMENT untuk tabel `tbl_absensi`
 --
 ALTER TABLE `tbl_absensi`
-  MODIFY `kd_absensi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191212;
+  MODIFY `kd_absensi` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191227;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_diagnosa`
@@ -846,19 +956,19 @@ ALTER TABLE `tbl_diagnosa`
 -- AUTO_INCREMENT untuk tabel `tbl_dokter`
 --
 ALTER TABLE `tbl_dokter`
-  MODIFY `kd_dokter` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `kd_dokter` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
-  MODIFY `kd_jadwal` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `kd_jadwal` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_karyawan`
 --
 ALTER TABLE `tbl_karyawan`
-  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `no` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_obat`

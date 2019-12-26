@@ -140,7 +140,7 @@ function submit(x){
             $("[name='diagnosa']").val(hasil[0].nama_diagnosa);
             $("[name='deskripsi']").val(hasil[0].deskripsi);
           }
-        }); 
+      }); 
   }
 
   

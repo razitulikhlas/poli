@@ -41,7 +41,9 @@ class ListPasien extends CI_Controller
 		// "rekam_medik" => $this->rekammedis_model->detailMedik($detail_medik,'rekam_medik')->row(),
 		
 		// ];
-		$where = array( 'kd_pasien' => $kd_pasien);
+		$where   = array( 'kd_pasien' => $kd_pasien);
+		$labor   = array( 'jenis' => 'labor');
+		$perawat = array( 'jenis' => 'perawat');
 		$data = [
 			"pasien"     => $this->pasien_model->getWhere($where),
 			"kodepasien" => $kodejadwal,
@@ -49,10 +51,12 @@ class ListPasien extends CI_Controller
 			"diagnosa"   => $this->diagnosa_model->getAll(),
 			"obat"		 => $this->obat_model->getAll(),
 			"tindakan"   => $this->tindakan_model->getAll(),
-			"karyawan"   => $this->karyawan_model->getAll(),
+			"labor"      => $this->karyawan_model->getKaryawan($labor),
+			"perawat"    => $this->karyawan_model->getKaryawan($perawat),
 			"lab"		 => $this->labor_model->getAll(),
 			"dokter"     => $kd_dokter
 		];
+
  		$this->load->model('pendaftaran_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
@@ -275,6 +279,7 @@ class ListPasien extends CI_Controller
 		}else if($jenis == 2){
 			$where  = array('no' => $id);
 			$result = $this->tindakan_model->deleteDetail($where);
+			$log    = $this->tindakan_model->delete_log($id);
 			if($result > 0){
 				echo json_encode('success');
 			}else{
@@ -299,6 +304,7 @@ class ListPasien extends CI_Controller
 		}else{
 			$where  = array('no' => $id);
 			$result = $this->labor_model->deleteDetail($where);
+			$log    = $this->labor_model->delete_log($id);
 			if($result > 0){
 				echo json_encode('success');
 			}else{

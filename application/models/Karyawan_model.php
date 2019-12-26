@@ -7,4 +7,12 @@ class Karyawan_model extends MY_Model {
         $detail = '';
         parent::__construct($table,$detail);
     }
+
+    public function getRiwayat($where){
+        return  $this->db->get_where('log_gaji_karyawan',$where)->result_array();
+    }
+
+    public function getKaryawan($where){
+        return  $this->db->get_where('tbl_karyawan',$where)->result_array();
+    }
 }
