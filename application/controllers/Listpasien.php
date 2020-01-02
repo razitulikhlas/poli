@@ -63,6 +63,11 @@ class ListPasien extends CI_Controller
 		$this->load->view('waiting/v_diagnosa',$data);
 		$this->load->view('templates/footer');
 	}
+
+	public function getMax(){
+		$data = $this->dokter_model->getMax();
+	   print_r($data);
+	}
 	public function simpanData(){
 		$faktur    = $this->input->post('faktur');
 		$total     = $this->input->post('total');
@@ -79,12 +84,13 @@ class ListPasien extends CI_Controller
 			"status" => 1
 		);
 
+		
+
 		$result  = $this->save('tbl_transaksi',$data);//save data
 		$this->pendaftaran_model->update($dataupdate,$where);//update status transaksi
 		// $this->insertRiwayat($kd_dokter,$faktur);
 		echo json_encode($result);
 	}
-
 
 	public function saveRincian(){
 		$kd_rincian = $this->input->post('kd_rincian');
@@ -108,17 +114,27 @@ class ListPasien extends CI_Controller
 			$harga       = $this->input->post('harga');
 			$feedokter   = $this->input->post('feedokter');
 			$feekaryawan = $this->input->post('feekaryawan');
-			
-			$data = array(
+			$kd_dokter   = $this->input->post('kd_dokter');
+
+			 $data = array(
 				"no_faktur"   => $faktur,
 				"kd_tindakan" => $kd_tindakan,
 				"kd_karyawan" => $kd_karyawan,
 				"harga"       => $harga,
 				"fee_dokter"  => $feedokter,
 				"fee_karywan"=> $feekaryawan,
-
 			);
 			$result  = $this->save('detail_tindakan',$data);
+			$nomor		 = $this->dokter_model->getMax();
+			$max 		 = $nomor->no;
+			$datalog = array(
+				"kd_dokter"  => $kd_dokter,
+				"gaji"       => $feedokter,
+				"keterangan" => $faktur." Tindakan Dokter".$max
+			);
+			
+			 $log = $this->dokter_model->log_gaji($datalog);
+		
 		}else if($kd_rincian == 3){ //kd rincian 3 untuk menyimpan detail_lab
 			$faktur = $this->input->post('faktur');
 			$kd_labor = $this->input->post('kd_labor');
@@ -126,6 +142,7 @@ class ListPasien extends CI_Controller
 			$harga = $this->input->post('harga');
 			$feedokter   = $this->input->post('feedokter');
 			$feekaryawan = $this->input->post('feekaryawan');
+			$kd_dokter   = $this->input->post('kd_dokter');
 			$data = array(
 				"no_faktur"   => $faktur,
 				"kd_labor"    => $kd_labor,
@@ -134,7 +151,16 @@ class ListPasien extends CI_Controller
 				"fee_dokter"  => $feedokter,
 				"fee_karywan" => $feekaryawan,
 			);
-			$result  = $this->save('detail_lab',$data);
+			$result      = $this->save('detail_lab',$data);
+			$nomor		 = $this->dokter_model->getMaxLab();
+			$max 		 = $nomor->no;
+			$datalog = array(
+				"kd_dokter"  => $kd_dokter,
+				"gaji"       => $feedokter,
+				"keterangan" => $faktur."Labor Dokter".$max
+			);
+			 $log = $this->dokter_model->log_gaji($datalog);
+
 		}else if($kd_rincian == 4){ //kd rincian 4 untuk menyimpan keluhan
 			$faktur = $this->input->post('faktur');
 			$keluhan   = $this->input->post('keluhan');
@@ -152,8 +178,7 @@ class ListPasien extends CI_Controller
 			);
 			$result  = $this->save('detail_diagnosa',$data);
 		}
-		echo json_encode($result);
-		
+		echo json_encode($result);	
 	}
 	public function pembayaran(){
 			$faktur = $this->input->post('faktur');
@@ -259,12 +284,12 @@ class ListPasien extends CI_Controller
 		$data  = $this->diagnosa_model->getDetailWhere($where); 
 		echo json_encode($data);
 	}
-	public function getNama(){
-		$kd_dokter = $this->input->post('kd_dokter');
-		$kd_pasien = $this->input->post('kd_pasien');
-		$nama = $this->pendaftaran_model->getNama($kd_dokter,$kd_pasien);
-		echo json_encode($nama);
-	}
+	// public function getNama(){
+	// 	$kd_dokter = $this->input->post('kd_dokter');
+	// 	$kd_pasien = $this->input->post('kd_pasien');
+	// 	$nama = $this->pendaftaran_model->getNama($kd_dokter,$kd_pasien);
+	// 	echo json_encode($nama);
+	// }
 	public function hapusRincian(){
 		$jenis = $this->input->post('jenis');
 		$id    = $this->input->post('id');
@@ -279,7 +304,8 @@ class ListPasien extends CI_Controller
 		}else if($jenis == 2){
 			$where  = array('no' => $id);
 			$result = $this->tindakan_model->deleteDetail($where);
-			$log    = $this->tindakan_model->delete_log($id);
+			$log    = $this->tindakan_model->delete_log($id);//fUNGSI Menghapus di tabel log
+			$logdokter = $this->dokter_model->delete_log($id);
 			if($result > 0){
 				echo json_encode('success');
 			}else{
@@ -304,7 +330,8 @@ class ListPasien extends CI_Controller
 		}else{
 			$where  = array('no' => $id);
 			$result = $this->labor_model->deleteDetail($where);
-			$log    = $this->labor_model->delete_log($id);
+			$log    = $this->labor_model->delete_log($id);//fUNGSI Menghapus di tabel log
+			$logdokter = $this->dokter_model->delete_loglab($id);
 			if($result > 0){
 				echo json_encode('success');
 			}else{

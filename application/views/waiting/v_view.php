@@ -6,7 +6,7 @@
  
          <div class="card">
               <div class="card-header" style="background-color: aqua">
-           
+              <h3 class="card-title">Pasien Dokter </h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse" style="color: white">
                     <i class="fas fa-minus"></i></button>
@@ -16,8 +16,8 @@
 
               <div class="card-body" style="background-color: #212529; color: white;">
             
-                <button type="button" id="btncel" class="btn bg-gradient-success mb-3" >Export Excell</button>
-                <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button>
+                <!-- <button type="button" id="btncel" class="btn bg-gradient-success mb-3" >Export Excell</button>
+                <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button> -->
        
               
                 <table id="tabel_id" class="table table-bordered mt-3 mb-3" >

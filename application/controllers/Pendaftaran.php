@@ -3,9 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Pendaftaran extends CI_Controller
 {
-
-
-
 	public function index()
 	{
 		$data['spesialis'] = $this->spesialis_model->getAll();
@@ -118,8 +115,8 @@ class Pendaftaran extends CI_Controller
 
 
 		$querydokter = "
-						SELECT count(kd_poli) AS 'jumlah' FROM 	tbl_jadwal 
-						WHERE kd_poli = '$kd_poli' && date(created_at)=CURRENT_DATE
+		SELECT count(kd_poli) AS 'jumlah' FROM 	tbl_jadwal 
+		WHERE kd_poli = '$kd_poli' && tanggal like concat('%',DAYNAME(CURRENT_DATE),'%')
 
 					";
 		$data  = [

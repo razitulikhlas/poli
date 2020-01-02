@@ -358,6 +358,7 @@ let faktur    = $('#nofaktur').val();
           let kd_obat   = $("[name='kd_obat']").val();
           let subharga  = $("[name='subhargaobat']").val();
           let jumlah    = $("[name='jumlahobat']").val();
+          
           $.ajax({
             type     : 'POST',
             data     :  'kd_obat='+kd_obat+
@@ -382,6 +383,7 @@ let faktur    = $('#nofaktur').val();
           let harga         = $("[name='hargatindakan']").val();
           let feedokter     = $('#feedoktertindakan').val();
           let feekaryawan   =$('#feekarywantindakan').val();
+          let kd_dokter     = $("#kodedokter").val();
       
           $.ajax({
             type     : 'POST',
@@ -391,6 +393,7 @@ let faktur    = $('#nofaktur').val();
                         '&feedokter='+feedokter+
                         '&feekaryawan='+feekaryawan+
                         '&kd_karyawan='+kd_krywntdkn+
+                        '&kd_dokter='+kd_dokter+
                         '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/saveRincian"?>',
             dataType : 'json',
@@ -440,7 +443,8 @@ let faktur    = $('#nofaktur').val();
          let kd_krywnlab = $("[name='karyawan_lab']").val();
          let harga       = $("[name='hargalab']").val();
          let feedokter   = $('#feedokterlab').val();
-        let feekaryawan  = $('#feekarywanlab').val();
+         let feekaryawan = $('#feekarywanlab').val();
+         let kd_dokter     = $("#kodedokter").val();
 
           $.ajax({
             type     : 'POST',
@@ -450,6 +454,7 @@ let faktur    = $('#nofaktur').val();
                         '&feedokter='+feedokter+
                         '&feekaryawan='+feekaryawan+
                         '&kd_karyawan='+kd_krywnlab+
+                        '&kd_dokter='+kd_dokter+
                         '&faktur='+faktur,
             url      : '<?= base_url()."listpasien/saveRincian"?>',
             dataType : 'json',
@@ -691,7 +696,7 @@ let faktur    = $('#nofaktur').val();
       }
     })  
   }
-
+ 
   function hapusDiagnosa(kd){
     $.ajax({
       type     : 'POST',
@@ -723,24 +728,6 @@ let faktur    = $('#nofaktur').val();
     })
   }
     
-  function getNama(){
-      let kd_pasien = $('#namapasien').val();
-      let kd_dokter = $('#namadokter').val();
-      $.ajax({
-        type     : 'POST',
-        data     : 'kd_pasien='+kd_pasien+'&kd_dokter='+kd_dokter,
-        url      : '<?= base_url()."listpasien/getNama"?>',
-        dataType : 'json',
-        success  : function(hasil){
-          $('#namapasien').val(hasil.namapasien);
-          $('#namadokter').val(hasil.namadokter);
-        }
-      });
-  }
-
- 
-    
-
     function detailObat(){
     let kd_obat = $('#kd_obat').val();
     $.ajax({
@@ -807,7 +794,7 @@ let faktur    = $('#nofaktur').val();
   }
   
 
-  getNama();
+
   getHargaLab();
   getHargaTindakan();
   detailObat();

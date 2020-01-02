@@ -17,18 +17,26 @@ class Profile extends CI_Controller {
 
 		$jadwal = array('kd_dokter');
 		$data =[
-				'dokter' => $this->profile_model->get_data($query)->result(),
+				'dokters' => $this->profile_model->get_data($query)->result(),
 				'pasien'   => $this->dokter_model->getTotalPasien(28),
+				'diagnosa' => $this->dokter_model->getTotalDiagnosa('28'),
+				'dokter'   => $this->dokter_model->getWhere($where),
+				'kddokter'   => '28'
 			]; 
+			
+			$datas = [
+				
+				
+				'pasien'   => $this->dokter_model->getTotalPasien('28'),
+				
+			];
 		$this->load->model('profile_model');
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
-		$this->load->view('profile/v_view',$data);
+		$this->load->view('profile/v_view',$data,$datas);
 		$this->load->view('templates/footer');
 
 	}
-
-	
 
 	public function absen(){
 		$today = date('ymd');
@@ -40,9 +48,7 @@ class Profile extends CI_Controller {
 				'kd_dokter' => $kd_dokter,
 				'tarif' => $tarif
 		);
-		
 		$data = $this->profile_model->input_data($data,'tbl_absensi');
-
 		echo json_encode($data);
 	}
 

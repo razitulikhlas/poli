@@ -91,7 +91,7 @@ class Pendaftaran_model extends MY_Model
         $this->db->where('kd_jadwal', $where);
         return $this->db->get()->row();
     }
-
+ 
     public function checkStatus()
     {
         $this->db->select('status,no_pendaftaran');

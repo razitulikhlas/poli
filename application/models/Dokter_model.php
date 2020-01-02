@@ -15,6 +15,20 @@ class Dokter_model extends MY_Model {
         return $this->db->get()->result_array();
     }
 
+    public function log_gaji($data){
+        $this->db->insert('log_gaji',$data);
+    }
+
+    public function getMax(){
+        $this->db->select_max('no');
+        return $this->db->get('detail_tindakan')->row();
+    }
+
+    public function getMaxLab(){
+        $this->db->select_max('no');
+        return $this->db->get('detail_lab')->row();
+    }
+
     public function getTotalDiagnosa($kd){
         $query = "select count(tbl_diagnosa.kd_dokter) AS jumlah from tbl_diagnosa JOIN tbl_dokter
         on tbl_diagnosa.kd_dokter=tbl_dokter.kd_dokter
@@ -51,6 +65,16 @@ class Dokter_model extends MY_Model {
         $this->db->group_by("pasien.kd_pasien");
         // return $this->db->get_compiled_select();
         return $this->db->get()->result_array();
+    }
+
+    public function delete_log($id){
+        $query ="delete from log_gaji where keterangan like '%Tindakan Dokter$id'";
+        $this->db->query($query);
+    }
+    
+    public function delete_loglab($id){
+        $query ="delete from log_gaji where keterangan like '%Labor Dokter$id'";
+        $this->db->query($query);
     }
 }
 

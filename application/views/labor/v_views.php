@@ -17,8 +17,8 @@
               <div class="card-body" style="background-color: #212529; color: white;">
               <div class="flash-data" data-flashdata="<?= $this->session->flashdata('flash');?>"></div>
                 <a href="<?= base_url()?>labor/tambah" class="btn btn-danger mb-3">Tambah Data</a>
-                <button type="button" id="btncel" class="btn bg-gradient-success mb-3" >Export Excell</button>
-                <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button>
+                <!-- <button type="button" id="btncel" class="btn bg-gradient-success mb-3" >Export Excell</button>
+                <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button> -->
                <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button> -->
               
                 <table id="tabel_id" class="table table-bordered mt-3 mb-3" >

@@ -45,8 +45,8 @@
               <div class="card-body" style="background-color: #212529; color: white;">
 
               	<button type="button" class="btn bg-gradient-danger mb-3" data-toggle="modal" data-target=".bd-example-modal-xl">Tambah Data</button>
-              	<button type="button" class="btn bg-gradient-success mb-3">Export Excell</button>
-              	<button type="button" class="btn bg-gradient-primary mb-3">Export Word</button>
+              	<!-- <button type="button" class="btn bg-gradient-success mb-3">Export Excell</button>
+              	<button type="button" class="btn bg-gradient-primary mb-3">Export Word</button> -->
                <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button> -->
               
                 <table id="tabel_id" class="table table-bordered mt-3" >

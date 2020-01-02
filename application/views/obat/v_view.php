@@ -19,8 +19,8 @@
                 <div class="flash-data" data-flashdata="<?= $this->session->flashdata('flash');?>"></div>
                 <!-- <button type="button" class="btn bg-gradient-danger mb-3" data-toggle="modal" data-target=".bd-example-modal-xl">Tambah Data</button> -->
                 <a href="<?= base_url()?>obat/tambah" class="btn btn-danger mb-3">Tambah Data</a>
-                <button type="button" id="export" class="btn bg-gradient-success mb-3" >Export Excell</button>
-                <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button>
+                <!-- <button type="button" id="export" class="btn bg-gradient-success mb-3" >Export Excell</button>
+                <button type="button" class="btn bg-gradient-primary mb-3">Export Word</button> -->
                <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button> -->
               
                 <div class="container-fluid">
